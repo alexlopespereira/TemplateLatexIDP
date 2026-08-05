@@ -1,0 +1,27 @@
+name: Compilar o PDF
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compilar main.tex
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+          latexmk_use_lualatex: false
+          args: -pdf -interaction=nonstopmode -file-line-error
+          extra_system_packages: ""
+
+      - name: Publicar o PDF como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: main-pdf
+          path: main.pdf

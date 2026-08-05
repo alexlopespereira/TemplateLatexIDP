@@ -1,0 +1,69 @@
+%%=============================================================================
+%% TEMPLATE LATEX -- IDP
+%% Instituto Brasileiro de Ensino, Desenvolvimento e Pesquisa
+%%
+%% Compile com:  latexmk -pdf main.tex
+%% (ou:  pdflatex main -> biber main -> pdflatex main -> pdflatex main)
+%%
+%% Opcoes da classe:
+%%   bacharelado | especializacao | mestrado | doutorado  (define a natureza)
+%%   secaonovapagina | secaocontinua                      (quebra de capitulo)
+%%   semlinks | links                                     (cor dos hiperlinks)
+%%   rascunho                                             (marca d'agua)
+%%=============================================================================
+\documentclass[bacharelado]{idp}
+
+%% Pacotes extras que voce quiser usar no seu trabalho ------------------------
+% \usepackage{amsmath}
+% \usepackage{longtable}
+% \usepackage{siunitx}
+
+%% Arquivo de referencias bibliograficas (formato BibTeX) ---------------------
+\addbibresource{referencias.bib}
+
+%% Metadados do trabalho ------------------------------------------------------
+\input{config/dados}
+
+\begin{document}
+
+%%=============================== PRE-TEXTUAL ================================
+\pretextual
+
+\capa                    % Capa (obrigatorio, nao e contada na paginacao)
+\folhaderosto            % Folha de rosto (obrigatorio, folha 1)
+\fichacatalografica      % Ficha catalografica (obrigatorio)
+\folhadeaprovacao        % Folha de aprovacao (obrigatorio)
+
+\input{pretextual/dedicatoria}      % opcional
+\input{pretextual/agradecimentos}   % opcional
+\input{pretextual/epigrafe}         % opcional
+\input{pretextual/resumo}           % obrigatorio
+\input{pretextual/abstract}         % obrigatorio
+
+\listailustracoes        % opcional -- alimentada por \caption em figure
+\listatabelas            % opcional -- alimentada por \caption em table
+\listaquadros            % opcional -- alimentada por \caption em quadro
+\listagraficos           % opcional -- alimentada por \caption em grafico
+
+\input{pretextual/siglas}           % opcional
+
+\sumario                 % obrigatorio
+
+%%================================= TEXTUAL ==================================
+\textual
+
+\input{capitulos/01-introducao}
+\input{capitulos/02-referencial-teorico}
+\input{capitulos/03-procedimentos-metodologicos}
+\input{capitulos/04-analise-e-discussao}
+\input{capitulos/05-consideracoes-finais}
+
+%%=============================== POS-TEXTUAL ================================
+\postextual
+
+\referencias             % obrigatorio (NBR 6023)
+
+\input{postextual/apendices}        % opcional
+\input{postextual/anexos}           % opcional
+
+\end{document}
