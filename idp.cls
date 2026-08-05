@@ -180,9 +180,19 @@
 % As secoes primarias aparecem em CAIXA ALTA tambem no sumario. Para isso o
 % \section grava a entrada do sumario ja envolvida em \MakeUppercase (aplicar
 % \MakeUppercase na leitura do .toc quebraria as ancoras do hyperref).
+%
+% O \texorpdfstring e OBRIGATORIO aqui, nao e refinamento: a mesma entrada vai
+% para \addcontentsline, e o hyperref a converte em PDF string para montar o
+% bookmark. Dentro do \pdfstringdef ele mapeia \MakeUppercase para
+% \MakeUppercaseUnsupportedInPdfStrings, macro que so existe quando o kernel
+% oferece \text_uppercase:n (LaTeX recente). Em kernel antigo esse macro NAO e
+% definido e a compilacao morre com "undefined control sequence" ao gerar o
+% bookmark. Com \texorpdfstring o \MakeUppercase nunca chega ao PDF string:
+% o sumario sai em caixa alta e o bookmark sai em caixa normal.
 \let\idp@origsection\section
 \newcommand{\idp@sectionstar}[1]{\idp@origsection*{#1}}
-\def\idp@sectionplain[#1]#2{\idp@origsection[\MakeUppercase{#1}]{#2}}
+\def\idp@sectionplain[#1]#2{%
+  \idp@origsection[\texorpdfstring{\MakeUppercase{#1}}{#1}]{#2}}
 \renewcommand{\section}{\@ifstar{\idp@sectionstar}{\@dblarg\idp@sectionplain}}
 
 % Apelidos em portugues para quem preferir "capitulo"
@@ -875,6 +885,18 @@
 \fi
 \RequirePackage{url}
 \urlstyle{same}
+
+% Rede de seguranca: comandos da classe que porventura cheguem a um PDF string
+% (bookmarks, \pdftitle, \pdfauthor) sao neutralizados aqui, em vez de
+% dependerem do tratamento que cada versao do hyperref oferece.
+% (\idp@campovazio nao precisa entrar aqui: ja produz texto puro.)
+\pdfstringdefDisableCommands{%
+  \let\idptabbox\@firstofone
+  \let\espacosimples\@empty
+  \let\espacoumemeio\@empty
+  \let\idpcorpodez\@empty
+  \let\idpcorpoonze\@empty
+}
 
 \AtBeginDocument{%
   \hypersetup{%
