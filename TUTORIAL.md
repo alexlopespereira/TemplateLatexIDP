@@ -126,11 +126,15 @@ entram. Você só o edita para **adicionar ou remover um capítulo**.
 
 ## 4. Preencha seus dados
 
-Abra `config/dados.tex` e preencha tudo:
+`config/dados.tex` é a **fonte única da verdade** do seu trabalho. Tudo o que
+aparece na capa, na folha de rosto, na ficha catalográfica, na folha de aprovação
+e nos metadados do PDF sai daqui. Você digita cada dado **uma única vez**.
 
 ```latex
+%% --- Identificação ---
 \titulo{A eficácia horizontal dos direitos fundamentais}
 \subtitulo{uma análise da jurisprudência do STF}
+\titulotraduzido{The horizontal effect of fundamental rights}  % opcional
 
 \autor{Maria Aparecida de Souza}
 \autorficha{SOUZA, Maria Aparecida de}     % formato invertido, p/ a ficha
@@ -138,20 +142,63 @@ Abra `config/dados.tex` e preencha tudo:
 \orientador{Prof. Dr. João Carlos Pereira}
 \coorientador{}                            % vazio se não houver
 
+%% --- Vínculo institucional ---
 \curso{Direito}                            % graduação / especialização
 \programa{Direito Constitucional}          % mestrado / doutorado
-\local{Brasília-DF}
+\area{Direitos Fundamentais}               % área de concentração (pós)
+\linhapesquisa{Jurisdição constitucional}  % linha de pesquisa (pós)
+
+\cidade{Brasília}                          % usada na folha de aprovação
+\local{Brasília-DF}                        % usado na capa e folha de rosto
 \data{2026}
 
-\datadefesa{Brasília, 15 de dezembro de 2026.}
+%% --- Defesa ---
+\datadefesa{15 de dezembro de 2026}        % SÓ a data; a cidade vem de \cidade
 
 \membrobanca{Prof. Dr. João Carlos Pereira}{Orientador}
 \membrobanca{Profa. Dra. Ana Lima}{Examinadora}
-\membrobanca{Prof. Dr. Pedro Rocha}{Examinador}
+\membrobanca[Universidade de Brasília]{Prof. Dr. Pedro Rocha}{Examinador}
 
+%% --- Resumo ---
 \palavraschave{Direitos fundamentais. Eficácia horizontal. STF.}
 \keywords{Fundamental rights. Horizontal effect. Brazilian Supreme Court.}
 ```
+
+Repare em dois detalhes que evitam erro:
+
+* **`\datadefesa` recebe só a data.** A linha "Brasília, 15 de dezembro de 2026."
+  é montada com o `\cidade`. Assim você não corre o risco de mudar a cidade num
+  campo e esquecer do outro. Se o seu programa exigir outra redação, use
+  `\datadefesacompleta{Aprovada em 15 de dezembro de 2026.}`.
+* **`\membrobanca` aceita a instituição** entre colchetes, antes do nome — útil
+  para examinador externo ao IDP. É opcional.
+
+### A tabela completa dos campos
+
+| Campo | Obrigatório? | Onde aparece |
+|---|---|---|
+| `\titulo` | ✅ | capa, folha de rosto, aprovação, ficha, metadados |
+| `\subtitulo` | — | junto do título |
+| `\titulotraduzido` | — | disponível para o *abstract* |
+| `\autor` | ✅ | capa, rosto, aprovação, metadados |
+| `\autorficha` | ✅ | ficha catalográfica (formato invertido) |
+| `\orientador` | ✅ | capa, rosto, aprovação, ficha |
+| `\coorientador` | — | rosto e aprovação, se preenchido |
+| `\curso` | ✅ graduação/especialização | capa, rosto, ficha |
+| `\programa` | ✅ mestrado/doutorado | rosto, aprovação |
+| `\area` | — | rosto e aprovação, como "Área de concentração" |
+| `\linhapesquisa` | — | rosto e aprovação |
+| `\cidade` | — | folha de aprovação |
+| `\local` | — | capa e folha de rosto |
+| `\data` | — | capa, rosto, ficha |
+| `\datadefesa` | ✅ | folha de aprovação |
+| `\membrobanca` | ✅ | folha de aprovação (repita para cada membro) |
+| `\palavraschave` | ✅ | resumo |
+| `\keywords` | ✅ | *abstract* |
+| `\cutter` | — | ficha catalográfica |
+| `\numeropaginas` | ✅ | ficha catalográfica |
+| `\cdd` | ✅ | ficha catalográfica |
+| `\assuntos` | — | ficha; se vazio, usa as palavras-chave |
 
 Depois, em `main.tex`, escolha o tipo de trabalho:
 
@@ -160,7 +207,46 @@ Depois, em `main.tex`, escolha o tipo de trabalho:
 ```
 
 O texto da natureza do trabalho (“Dissertação apresentada ao programa de
-pós-graduação em…”) é gerado automaticamente a partir dessa opção.
+pós-graduação em…”) é gerado automaticamente a partir dessa opção. Essa é a
+**única** informação do trabalho que não fica em `dados.tex` — ela precisa ser
+conhecida antes de o arquivo ser lido.
+
+### Reaproveitando os dados no texto
+
+Não redigite seu nome nem o do orientador no corpo do trabalho. Use os
+acessores — se o dado mudar em `dados.tex`, muda em todo lugar de uma vez:
+
+```latex
+Ao meu orientador, \NomeOrientador, agradeço a paciência e o rigor.
+```
+
+| Acessor | Devolve |
+|---|---|
+| `\TituloTrabalho` `\SubtituloTrabalho` `\TituloTraduzido` | o título |
+| `\NomeAutor` | o autor |
+| `\NomeOrientador` `\NomeCoorientador` | a orientação |
+| `\NomeCurso` `\NomePrograma` `\NomeInstituicao` | o vínculo |
+| `\AreaConcentracao` `\LinhaPesquisa` | a pesquisa |
+| `\LocalTrabalho` `\CidadeTrabalho` `\AnoTrabalho` | local e ano |
+
+### Campos que você esqueceu
+
+Campo obrigatório em branco **não passa despercebido**. Ele aparece no PDF como
+`[[ PREENCHER: cdd ]]` e gera aviso na compilação, nomeando o campo:
+
+```
+Class idp Warning: Campo nao preenchido em config/dados.tex: cdd.
+```
+
+Ao gerar a **versão final**, acrescente a opção `entrega`:
+
+```latex
+\documentclass[mestrado,entrega]{idp}
+```
+
+Com ela o aviso vira erro: a compilação aborta e **nenhum PDF é gerado**
+enquanto houver campo pendente. É a sua rede de segurança contra entregar a
+monografia com `XXXX` na ficha catalográfica — um erro mais comum do que parece.
 
 ### A ficha catalográfica
 
@@ -493,6 +579,8 @@ no próprio repositório:
 | Figura não aparece | caminho ou extensão errados | confira que o arquivo está em `figuras/` e o nome bate (maiúsculas contam) |
 | `File 'xxx.sty' not found` | pacote não instalado | MiKTeX baixa sozinho; no TeX Live, `sudo tlmgr install xxx` |
 | Texto sumiu do PDF | um `%` no meio da linha | escreva `\%` quando quiser o símbolo por cento |
+| `[[ PREENCHER: xxx ]]` no PDF | campo obrigatório em branco | preencha `xxx` em `config/dados.tex` |
+| `Class idp Error: N campo(s)...` | opção `entrega` com campos pendentes | preencha-os, ou tire o `entrega` enquanto ainda está rascunhando |
 | Tudo parou de compilar depois de uma alteração | erro estrutural (chave `}` faltando) | `git diff` para ver o que mudou; `git checkout -- arquivo.tex` para desfazer |
 
 Se travar de vez: apague os auxiliares e recomece do zero.
@@ -513,10 +601,17 @@ latexmk -C && latexmk -pdf main.tex
 - [ ] Numeração no canto superior direito, começando a aparecer na introdução
 - [ ] Citações longas com recuo de 4 cm, corpo 10, entrelinha simples
 
+**Dados do trabalho**
+
+- [ ] `main.tex` compila com a opção `entrega` — é o teste automático de que
+      nenhum campo de `config/dados.tex` ficou pendente
+- [ ] Nenhuma ocorrência de `[[ PREENCHER` no PDF
+- [ ] Ficha catalográfica **oficial**, solicitada em biblioteca@idp.edu.br
+- [ ] Nomes da banca conferidos, com a instituição dos examinadores externos
+
 **Conteúdo**
 
 - [ ] Capa, folha de rosto, ficha catalográfica e folha de aprovação preenchidas
-- [ ] Ficha catalográfica **oficial**, solicitada em biblioteca@idp.edu.br
 - [ ] Resumo entre 150 e 500 palavras, parágrafo único, com palavras-chave
 - [ ] *Abstract* fiel ao resumo, com *keywords*
 - [ ] Sumário conferindo com os títulos e as páginas do texto

@@ -22,7 +22,7 @@ que terminou. Erros de LaTeX aparecem em `main.log` com o prefixo `!`.
 
 | Arquivo | Papel | Pode editar? |
 |---|---|---|
-| `config/dados.tex` | metadados (autor, título, orientador, banca) | ✅ |
+| `config/dados.tex` | metadados — **fonte única da verdade** | ✅ |
 | `capitulos/*.tex` | o texto do trabalho | ✅ |
 | `pretextual/*.tex` | resumo, abstract, agradecimentos, siglas… | ✅ |
 | `postextual/*.tex` | apêndices e anexos | ✅ |
@@ -30,6 +30,29 @@ que terminou. Erros de LaTeX aparecem em `main.log` com o prefixo `!`.
 | `figuras/` | imagens | ✅ |
 | `main.tex` | ordem dos arquivos | ⚠️ só para incluir/remover capítulo |
 | `idp.cls` | **toda a formatação ABNT/IDP** | ❌ **não altere** |
+
+### Dados do trabalho: nunca redigite, use o acessor
+
+Todo dado do trabalho vive em `config/dados.tex` e é digitado **uma única vez**.
+No corpo do texto, referencie-o pelo acessor em vez de repetir o valor:
+
+```latex
+Ao meu orientador, \NomeOrientador, agradeço a paciência.
+```
+
+Acessores: `\TituloTrabalho` `\SubtituloTrabalho` `\TituloTraduzido`
+`\NomeAutor` `\NomeOrientador` `\NomeCoorientador` `\NomeCurso` `\NomePrograma`
+`\NomeInstituicao` `\AreaConcentracao` `\LinhaPesquisa` `\LocalTrabalho`
+`\CidadeTrabalho` `\AnoTrabalho`.
+
+Se encontrar um nome de pessoa, curso ou instituição escrito à mão em
+`pretextual/` ou `capitulos/` e ele já existir em `dados.tex`, **substitua pelo
+acessor** — é uma correção sempre bem-vinda.
+
+Campos obrigatórios em branco aparecem no PDF como `[[ PREENCHER: campo ]]` e
+geram aviso no log. Nunca "conserte" isso escrevendo um valor inventado no
+lugar: avise o usuário, que é quem tem o dado. A opção de classe `entrega`
+transforma o aviso em erro e aborta a compilação.
 
 ### `idp.cls` é intocável
 

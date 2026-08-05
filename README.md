@@ -110,6 +110,57 @@ Outras opções combináveis:
 | `links` | hiperlinks coloridos, úteis na versão digital |
 | `rascunho` | marca d'água “RASCUNHO” |
 | `refautorrepetido` | repete o nome do autor nas referências, em vez do travessão |
+| `entrega` | aborta a compilação se algum campo obrigatório estiver em branco |
+
+## Os dados do trabalho
+
+`config/dados.tex` é a **fonte única da verdade**: cada dado é digitado uma vez
+e alimenta capa, folha de rosto, ficha catalográfica, folha de aprovação e os
+metadados do PDF.
+
+```latex
+\titulo{A eficácia horizontal dos direitos fundamentais}
+\subtitulo{uma análise da jurisprudência do STF}
+\autor{Maria Aparecida de Souza}
+\autorficha{SOUZA, Maria Aparecida de}
+\orientador{Prof. Dr. João Carlos Pereira}
+\programa{Direito Constitucional}
+\area{Direitos Fundamentais}
+\linhapesquisa{Jurisdição constitucional}
+\cidade{Brasília}
+\datadefesa{15 de dezembro de 2026}          % só a data; a cidade vem de \cidade
+\membrobanca[UnB]{Prof. Dr. Pedro Rocha}{Examinador}   % instituição é opcional
+```
+
+Campos disponíveis: `\titulo` `\subtitulo` `\titulotraduzido` `\autor`
+`\autorficha` `\orientador` `\coorientador` `\curso` `\programa` `\area`
+`\linhapesquisa` `\cidade` `\local` `\data` `\datadefesa` `\datadefesacompleta`
+`\membrobanca` `\palavraschave` `\keywords` `\cutter` `\numeropaginas` `\cdd`
+`\assuntos` `\tipotrabalho` `\preambulo` `\instituicao` `\logo` `\semlogo`.
+
+### Reaproveite os dados no texto
+
+Em vez de redigitar um nome no corpo do trabalho, use o acessor — o texto
+acompanha qualquer mudança em `dados.tex`:
+
+```latex
+Ao meu orientador, \NomeOrientador, agradeço a paciência e o rigor.
+```
+
+`\TituloTrabalho` `\SubtituloTrabalho` `\TituloTraduzido` `\NomeAutor`
+`\NomeOrientador` `\NomeCoorientador` `\NomeCurso` `\NomePrograma`
+`\NomeInstituicao` `\AreaConcentracao` `\LinhaPesquisa` `\LocalTrabalho`
+`\CidadeTrabalho` `\AnoTrabalho`.
+
+### Nada de `XXXX` na versão entregue
+
+Campo obrigatório em branco aparece no PDF como `[[ PREENCHER: cdd ]]` e gera
+aviso nomeando o campo. Na versão final, compile com a opção `entrega`: o aviso
+vira erro e **nenhum PDF é gerado** enquanto houver pendência.
+
+```latex
+\documentclass[mestrado,entrega]{idp}
+```
 
 ## Licença
 
