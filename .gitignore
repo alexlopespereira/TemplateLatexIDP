@@ -1,0 +1,38 @@
+# --- Arquivos auxiliares do LaTeX -------------------------------------------
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.lot
+*.loq
+*.lgr
+*.log
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.xdv
+
+# --- Editores ---------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# --- PDF gerado -------------------------------------------------------------
+# Descomente a linha abaixo se NÃO quiser versionar o PDF compilado.
+# main.pdf
+*-SAVE-ERROR
