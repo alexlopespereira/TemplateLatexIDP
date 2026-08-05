@@ -1,48 +1,79 @@
 %%=============================================================================
-%% DADOS DO TRABALHO
-%% Preencha todos os campos abaixo. Sao usados na capa, folha de rosto,
-%% ficha catalografica, folha de aprovacao e nos metadados do PDF.
+%% DADOS DO TRABALHO -- FONTE ÚNICA DA VERDADE
+%%
+%% Este é o ÚNICO arquivo onde os dados do seu trabalho devem ser digitados.
+%% Tudo o que aparece na capa, folha de rosto, ficha catalográfica, folha de
+%% aprovação e nos metadados do PDF é gerado a partir daqui.
+%%
+%% Campos marcados como OBRIGATÓRIO que ficarem em branco aparecem no PDF
+%% como ">>> PREENCHER: campo <<<" e geram aviso na compilação. Ao gerar a
+%% versão final, use a opção `entrega' em main.tex: ela transforma o aviso
+%% em erro e impede a compilação com campos pendentes.
+%%
+%% Para reaproveitar estes dados no corpo do texto, use os acessores:
+%%   \TituloTrabalho  \NomeAutor      \NomeOrientador   \NomeCoorientador
+%%   \NomeCurso       \NomePrograma   \NomeInstituicao  \AreaConcentracao
+%%   \LinhaPesquisa   \LocalTrabalho  \CidadeTrabalho   \AnoTrabalho
+%% Exemplo: "Ao meu orientador, \NomeOrientador, agradeço..."
 %%=============================================================================
 
-%% --- Identificacao ---------------------------------------------------------
-\titulo{Título do trabalho}
-\subtitulo{subtítulo se houver}          % deixe vazio: \subtitulo{}
+%% --- Identificação ---------------------------------------------------------
+\titulo{Título do trabalho}                       % OBRIGATÓRIO
+\subtitulo{subtítulo se houver}                   % opcional: \subtitulo{}
+\titulotraduzido{Title of the work}               % opcional (para o abstract)
 
-\autor{Nome Completo do Autor}
-\autorficha{SOBRENOME, Nome}             % formato invertido, p/ ficha catalográfica
+\autor{Nome Completo do Autor}                    % OBRIGATÓRIO
+\autorficha{SOBRENOME, Nome}                      % OBRIGATÓRIO (formato invertido)
 
-\orientador{Prof. Dr. Nome Completo do Orientador}
-\coorientador{}                          % opcional; deixe vazio se não houver
+\orientador{Prof. Dr. Nome Completo do Orientador}  % OBRIGATÓRIO
+\coorientador{}                                     % opcional
 
-%% --- Vinculo institucional -------------------------------------------------
-\curso{Direito}                          % usado em bacharelado/especialização
-\programa{Direito Constitucional}        % usado em mestrado/doutorado
-\local{Brasília-DF}
-\data{2026}
+%% --- Vínculo institucional -------------------------------------------------
+\curso{Direito}                          % OBRIGATÓRIO em bacharelado/especialização
+\programa{Direito Constitucional}        % OBRIGATÓRIO em mestrado/doutorado
+\area{}                                  % área de concentração (pós-graduação)
+\linhapesquisa{}                         % linha de pesquisa (pós-graduação)
+
+\cidade{Brasília}                        % usada na folha de aprovação
+\local{Brasília-DF}                      % usado na capa e folha de rosto
+\data{2026}                              % ano de depósito
 
 %% --- Defesa ----------------------------------------------------------------
-\datadefesa{Brasília, 15 de dezembro de 2026.}
+%% Informe APENAS a data; a cidade vem de \cidade acima.
+\datadefesa{15 de dezembro de 2026}      % OBRIGATÓRIO -> "Brasília, 15 de ... ."
 
+%% Banca: \membrobanca[Instituição]{Nome}{Função}   (instituição é opcional)
 \membrobanca{Prof. Dr. Nome Completo do Orientador}{Orientador}
 \membrobanca{Prof. Dr. Nome Completo do Examinador 1}{Examinador}
-\membrobanca{Prof. Dr. Nome Completo do Examinador 2}{Examinador}
+\membrobanca[Universidade de Brasília]{Prof. Dr. Nome do Examinador Externo}{Examinador}
 
-%% --- Ficha catalografica ---------------------------------------------------
-%% Solicite a ficha oficial pelo e-mail biblioteca@idp.edu.br e ajuste abaixo.
+%% --- Ficha catalográfica ---------------------------------------------------
+%% A ficha OFICIAL é elaborada pela Biblioteca Ministro Moreira Alves.
+%% Solicite por biblioteca@idp.edu.br e transcreva os dados recebidos aqui.
 \cutter{}                                % notação Cutter fornecida pela Biblioteca
-\numeropaginas{00}                       % número total de folhas
-\cdd{XXX}                                % Classificação Decimal de Dewey
+\numeropaginas{00}                       % OBRIGATÓRIO: total de folhas
+\cdd{XXX}                                % OBRIGATÓRIO: Classificação Decimal de Dewey
 \assuntos{1. Palavra-chave. 2. Palavra-chave. 3. Palavra-chave.}
 
 %% --- Resumo ----------------------------------------------------------------
-\palavraschave{Termo 1. Termo 2. Termo 3. Termo 4. Termo 5.}
-\keywords{Word 1. Word 2. Word 3. Word 4. Word 5.}
+\palavraschave{Termo 1. Termo 2. Termo 3. Termo 4. Termo 5.}   % OBRIGATÓRIO
+\keywords{Word 1. Word 2. Word 3. Word 4. Word 5.}             % OBRIGATÓRIO
 
-%% --- Natureza do trabalho --------------------------------------------------
-%% Por padrao o texto e gerado automaticamente a partir da opcao da classe
-%% (bacharelado / especializacao / mestrado / doutorado). Descomente e edite
-%% apenas se precisar de uma redacao diferente.
-%
+%% --- Sobreposições opcionais -----------------------------------------------
+%% Normalmente você NÃO precisa mexer daqui para baixo.
+
+%% Texto da natureza do trabalho. Por padrão é gerado a partir da opção da
+%% classe (bacharelado/especializacao/mestrado/doutorado).
 % \preambulo{Monografia apresentada como requisito para obtenção do título de
 %            bacharel em Direito do Instituto Brasileiro de Ensino,
 %            Desenvolvimento e Pesquisa -- IDP.}
+
+%% Tipo do trabalho na ficha catalográfica (padrão: Monografia/Dissertação/Tese)
+% \tipotrabalho{Trabalho de Conclusão de Curso}
+
+%% Linha inteira da data de defesa, se o seu programa exigir outra redação
+% \datadefesacompleta{Aprovada em 15 de dezembro de 2026.}
+
+%% Logotipo da capa
+% \logo{figuras/idp-logo.png}
+% \semlogo

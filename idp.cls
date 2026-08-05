@@ -23,6 +23,7 @@
 \newif\ifidp@links        \idp@linksfalse       % colorir hiperlinks
 \newif\ifidp@rascunho     \idp@rascunhofalse    % marca d'agua de rascunho
 \newif\ifidp@autorrepetido \idp@autorrepetidofalse % NBR 6023:2018 estrita
+\newif\ifidp@entrega      \idp@entregafalse       % aborta se faltar campo
 
 % --- nivel do trabalho (define a natureza padrao e o grau) -------------------
 \def\idp@nivel{bacharelado}
@@ -38,6 +39,7 @@
 \DeclareOption{semlinks}{\idp@linksfalse}
 \DeclareOption{rascunho}{\idp@rascunhotrue}
 \DeclareOption{refautorrepetido}{\idp@autorrepetidotrue}
+\DeclareOption{entrega}{\idp@entregatrue}
 
 % --- repasse para a classe base ---------------------------------------------
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
@@ -290,26 +292,47 @@
 %%-----------------------------------------------------------------------------
 %% 12. DADOS DO TRABALHO
 %%-----------------------------------------------------------------------------
+% --- Marcador de campo nao preenchido ---------------------------------------
+% Os campos obrigatorios NAO tem valor padrao plausivel: eles nascem com um
+% marcador que salta aos olhos no PDF e que a classe sabe reconhecer para
+% avisar (ou abortar, com a opcao `entrega') se algo ficou por preencher.
+% E texto puro de proposito -- assim sobrevive a \MakeUppercase e aos
+% metadados do PDF sem quebrar nada.
+% Nao use ">>>" nem "<<<": na codificacao T1 eles viram as ligaduras » e «.
+\newcommand{\idp@campovazio}[1]{[[ PREENCHER: #1 ]]}
+
+\newcount\idp@pendentes
+\newcommand{\idp@confere}[2]{%
+  \def\idp@tmp{\idp@campovazio{#1}}%
+  \ifx#2\idp@tmp
+    \global\advance\idp@pendentes by 1\relax
+    \ClassWarningNoLine{idp}{Campo nao preenchido em config/dados.tex: #1}%
+  \fi
+}
+
 \def\idp@instituicao{Instituto Brasileiro de Ensino, Desenvolvimento e Pesquisa
                      \textendash\ IDP}
-\def\idp@titulo{T\'itulo do trabalho}
+\def\idp@titulo{\idp@campovazio{titulo}}
 \def\idp@subtitulo{}
-\def\idp@autor{Nome do autor}
-\def\idp@autorficha{Sobrenome, Nome}
-\def\idp@orientador{Prof. Dr. Nome do orientador}
+\def\idp@autor{\idp@campovazio{autor}}
+\def\idp@autorficha{\idp@campovazio{autorficha}}
+\def\idp@orientador{\idp@campovazio{orientador}}
 \def\idp@coorientador{}
-\def\idp@curso{XXXXXX}
-\def\idp@programa{XXXX}
-\def\idp@area{}
+\def\idp@curso{\idp@campovazio{curso}}
+\def\idp@programa{\idp@campovazio{programa}}
+\def\idp@area{}              % area de concentracao (mestrado/doutorado)
+\def\idp@linhapesquisa{}     % linha de pesquisa
+\def\idp@titulotraduzido{}   % titulo em lingua estrangeira (para o abstract)
 \def\idp@local{Bras\'ilia-DF}
+\def\idp@cidade{Bras\'ilia}  % so a cidade, usada na folha de aprovacao
 \def\idp@data{\the\year}
-\def\idp@datadefesa{Bras\'ilia, dia de m\^es de ano.}
-\def\idp@palavraschave{}
-\def\idp@keywords{}
-\def\idp@cdd{XXX}
+\def\idp@datadefesa{\idp@campovazio{datadefesa}}
+\def\idp@palavraschave{\idp@campovazio{palavraschave}}
+\def\idp@keywords{\idp@campovazio{keywords}}
+\def\idp@cdd{\idp@campovazio{cdd}}
 \def\idp@assuntos{}   % "1. Assunto. 2. Assunto." -- se vazio usa \palavraschave
 \def\idp@cutter{}
-\def\idp@paginas{00}
+\def\idp@paginas{\idp@campovazio{numeropaginas}}
 \def\idp@tipotrabalho{}
 \def\idp@preambulo{}
 \def\idp@logo{figuras/idp-logo.png}   % use \semlogo para omitir
@@ -325,10 +348,18 @@
 \newcommand{\curso}[1]{\def\idp@curso{#1}}
 \newcommand{\programa}[1]{\def\idp@programa{#1}}
 \newcommand{\area}[1]{\def\idp@area{#1}}
+\newcommand{\linhapesquisa}[1]{\def\idp@linhapesquisa{#1}}
+\newcommand{\titulotraduzido}[1]{\def\idp@titulotraduzido{#1}}
 \newcommand{\local}[1]{\def\idp@local{#1}}
+\newcommand{\cidade}[1]{\def\idp@cidade{#1}}
 \renewcommand{\date}[1]{\def\idp@data{#1}}
 \newcommand{\data}[1]{\def\idp@data{#1}}
-\newcommand{\datadefesa}[1]{\def\idp@datadefesa{#1}}
+% \datadefesa recebe SO a data; a cidade vem de \cidade, para nao repetir o
+% mesmo dado em dois campos. Use \datadefesacompleta para controlar a linha
+% inteira (ex.: "Aprovada em 15 de dezembro de 2026.").
+\newcommand{\datadefesa}[1]{%
+  \def\idp@datadefesa{\idp@cidade, #1.}}
+\newcommand{\datadefesacompleta}[1]{\def\idp@datadefesa{#1}}
 \newcommand{\palavraschave}[1]{\def\idp@palavraschave{#1}}
 \newcommand{\keywords}[1]{\def\idp@keywords{#1}}
 \newcommand{\cdd}[1]{\def\idp@cdd{#1}}
@@ -340,10 +371,72 @@
 \newcommand{\logo}[1]{\def\idp@logo{#1}}
 \newcommand{\semlogo}{\let\idp@logo\@empty}
 
-% Banca examinadora: \membrobanca{Nome}{Funcao}
+% --- Acessores publicos ------------------------------------------------------
+% Permitem reaproveitar os dados no corpo do texto sem redigita-los. Ex.:
+%   "Ao meu orientador, \NomeOrientador, pela paciencia..."
+% Se o nome mudar em config/dados.tex, muda em todo lugar de uma vez.
+\newcommand{\TituloTrabalho}{\idp@titulo}
+\newcommand{\SubtituloTrabalho}{\idp@subtitulo}
+\newcommand{\TituloTraduzido}{\idp@titulotraduzido}
+\newcommand{\NomeAutor}{\idp@autor}
+\newcommand{\NomeOrientador}{\idp@orientador}
+\newcommand{\NomeCoorientador}{\idp@coorientador}
+\newcommand{\NomeCurso}{\idp@curso}
+\newcommand{\NomePrograma}{\idp@programa}
+\newcommand{\NomeInstituicao}{\idp@instituicao}
+\newcommand{\AreaConcentracao}{\idp@area}
+\newcommand{\LinhaPesquisa}{\idp@linhapesquisa}
+\newcommand{\LocalTrabalho}{\idp@local}
+\newcommand{\CidadeTrabalho}{\idp@cidade}
+\newcommand{\AnoTrabalho}{\idp@data}
+
+% --- Verificacao dos campos obrigatorios ------------------------------------
+% Roda depois que config/dados.tex ja foi lido. Sem a opcao `entrega' apenas
+% avisa; com ela, aborta a compilacao -- assim e impossivel gerar a versao
+% final com um ">>> PREENCHER <<<" perdido no meio do documento.
+\AtBeginDocument{%
+  \idp@confere{titulo}{\idp@titulo}%
+  \idp@confere{autor}{\idp@autor}%
+  \idp@confere{autorficha}{\idp@autorficha}%
+  \idp@confere{orientador}{\idp@orientador}%
+  \idp@confere{datadefesa}{\idp@datadefesa}%
+  \idp@confere{palavraschave}{\idp@palavraschave}%
+  \idp@confere{keywords}{\idp@keywords}%
+  \idp@confere{cdd}{\idp@cdd}%
+  \idp@confere{numeropaginas}{\idp@paginas}%
+  % curso e programa sao mutuamente exclusivos: cobra so o que o nivel usa
+  \ifx\idp@nivel\idp@n@mestrado
+    \idp@confere{programa}{\idp@programa}%
+  \else\ifx\idp@nivel\idp@n@doutorado
+    \idp@confere{programa}{\idp@programa}%
+  \else
+    \idp@confere{curso}{\idp@curso}%
+  \fi\fi
+  \ifnum\idp@pendentes>0\relax
+    \ifidp@entrega
+      \ClassError{idp}{%
+        \the\idp@pendentes\space campo(s) obrigatorio(s) nao preenchido(s) em
+        config/dados.tex}{%
+        Procure por "[[ PREENCHER" no PDF e pelas linhas "Campo nao
+        preenchido" acima neste log.\MessageBreak
+        Preencha config/dados.tex ou remova a opcao `entrega' da classe.}%
+      \stop % aborta de fato: nao gera PDF de entrega incompleto
+    \else
+      \ClassWarningNoLine{idp}{%
+        ATENCAO: \the\idp@pendentes\space campo(s) de config/dados.tex ainda
+        nao preenchido(s).\MessageBreak
+        Eles aparecem como ">>> PREENCHER: ... <<<" no PDF.\MessageBreak
+        Use a opcao de classe `entrega' para transformar isto em erro}%
+    \fi
+  \fi
+}
+
+% Banca examinadora: \membrobanca[Instituicao]{Nome}{Funcao}
+% A instituicao e opcional e sai numa terceira linha, sob a funcao -- util
+% quando ha examinador externo ao IDP.
 \newcommand{\idp@banca}{}
-\newcommand{\membrobanca}[2]{%
-  \g@addto@macro\idp@banca{\idp@membro{#1}{#2}}%
+\newcommand{\membrobanca}[3][]{%
+  \g@addto@macro\idp@banca{\idp@membro{#2}{#3}{#1}}%
 }
 
 % Titulo completo (titulo: subtitulo)
@@ -377,10 +470,14 @@
 \def\idp@n@mestrado{mestrado}
 \def\idp@n@doutorado{doutorado}
 
+% \tipotrabalho{} sobrepoe o tipo deduzido do nivel (util p/ "Trabalho de
+% Conclusao de Curso", "Relatorio Tecnico" etc. na ficha catalografica)
 \newcommand{\idp@tipopadrao}{%
-  \ifx\idp@nivel\idp@n@mestrado Disserta\c{c}\~ao%
-  \else\ifx\idp@nivel\idp@n@doutorado Tese%
-  \else Monografia\fi\fi
+  \ifx\idp@tipotrabalho\@empty
+    \ifx\idp@nivel\idp@n@mestrado Disserta\c{c}\~ao%
+    \else\ifx\idp@nivel\idp@n@doutorado Tese%
+    \else Monografia\fi\fi
+  \else\idp@tipotrabalho\fi
 }
 
 % Bloco da natureza do trabalho: recuo de 8 cm, justificado, espacamento simples
@@ -389,6 +486,10 @@
   \begin{minipage}{\dimexpr\textwidth-8cm\relax}
     \espacosimples\setlength{\parindent}{0pt}\normalsize
     \ifx\idp@preambulo\@empty\idp@preambulopadrao\else\idp@preambulo\fi\par
+    \ifx\idp@area\@empty\else
+      \vspace{\idplinhasimp}\'Area de concentra\c{c}\~ao: \idp@area\par\fi
+    \ifx\idp@linhapesquisa\@empty\else
+      Linha de pesquisa: \idp@linhapesquisa\par\fi
     \vspace{\idplinhasimp}
     Orientador(a): \idp@orientador
     \ifx\idp@coorientador\@empty\else\par Coorientador(a): \idp@coorientador\fi
@@ -491,9 +592,11 @@
 }
 
 % --- FOLHA DE APROVACAO ------------------------------------------------------
-\newcommand{\idp@membro}[2]{%
+% #1 nome | #2 funcao | #3 instituicao (opcional)
+\newcommand{\idp@membro}[3]{%
   \vspace{10.3mm}
-  {\rule{80mm}{0.4pt}\par #1\par #2\par}%
+  {\rule{80mm}{0.4pt}\par #1\par #2\par
+   \if\relax\detokenize{#3}\relax\else #3\par\fi}%
 }
 \newcommand{\folhadeaprovacao}{%
   \thispagestyle{idpsemnumero}%
