@@ -54,6 +54,21 @@ geram aviso no log. Nunca "conserte" isso escrevendo um valor inventado no
 lugar: avise o usuário, que é quem tem o dado. A opção de classe `entrega`
 transforma o aviso em erro e aborta a compilação.
 
+### Armadilha conhecida: `\MakeUppercase` e o hyperref
+
+Nunca coloque `\MakeUppercase` (nem outro comando frágil) dentro de
+`\addcontentsline`, `\caption[...]`, `\section[...]` ou `\hypersetup`. O
+hyperref converte esse texto em *PDF string* para montar o bookmark e, lá
+dentro, mapeia `\MakeUppercase` para `\MakeUppercaseUnsupportedInPdfStrings` —
+macro que **só existe** em kernel LaTeX recente. Em kernel antigo a compilação
+morre com `Undefined control sequence` no `\section`.
+
+Use sempre `\texorpdfstring{versão TeX}{versão PDF}`:
+
+```latex
+\section[\texorpdfstring{\MakeUppercase{Título}}{Título}]{Título}
+```
+
 ### `idp.cls` é intocável
 
 A classe reproduz medidas extraídas do PDF oficial do IDP
