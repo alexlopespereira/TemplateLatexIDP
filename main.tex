@@ -1,8 +1,8 @@
 %%=============================================================================
 %% TEMPLATE LATEX -- IDP
-%% Instituto Brasileiro de Ensino, Desenvolvimento e Pesquisa
+%% Universidade IDP - Modelo institucional 2026; manual como complemento
 %%
-%% Compile com:  latexmk -pdf main.tex
+%% Compile com:  latexmk -xelatex main.tex
 %% (ou:  pdflatex main -> biber main -> pdflatex main -> pdflatex main)
 %%
 %% Opcoes da classe:
@@ -11,7 +11,8 @@
 %%   semlinks | links                                     (cor dos hiperlinks)
 %%   rascunho                                             (marca d'agua)
 %%=============================================================================
-\documentclass[bacharelado]{idp}
+\input{config/nivel}
+\documentclass[\NivelTrabalho]{idp}
 
 %% Pacotes extras que voce quiser usar no seu trabalho ------------------------
 % \usepackage{amsmath}

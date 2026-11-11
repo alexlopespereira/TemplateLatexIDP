@@ -1,0 +1,99 @@
+% Documento avulso: nao integra a paginacao da dissertacao.
+% Compile com: latexmk -xelatex termo-autoria-ia.tex
+% A redacao institucional foi preservada conforme o termo oficial fornecido.
+\input{config/nivel}
+\documentclass[\NivelTrabalho]{idp}
+\input{config/dados}
+% O termo segue seu proprio modelo, sem herdar a tipografia da dissertacao.
+\geometry{left=30mm,right=30mm,top=26.5mm,bottom=20mm}
+\definecolor{termotexto}{HTML}{3E342F}
+\definecolor{termosubtitulo}{HTML}{B88746}
+\definecolor{termocampo}{HTML}{CC0000}
+\begin{document}
+\pagestyle{empty}
+\idpcorpo{10.5bp}{13.8bp}
+\color{termotexto}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\hyphenpenalty=10000
+\setlength{\emergencystretch}{1em}
+\newcommand{\parterm}{\hangindent=6mm\hangafter=1\relax}
+\newcommand{\opcaotermo}{\parterm(\hspace{1.2mm})\ }
+\begin{center}
+{\idpcorpo{14bp}{16bp}\color{black}\bfseries
+Termo de Declaração de Autoria e Uso de Inteligência Artificial\par}
+{\idpcorpo{9bp}{11bp}\color{termosubtitulo}\itshape
+Documento obrigatório para a marcação de bancas de qualificação e de defesa\par}
+\end{center}
+\vspace{2.4mm}
+
+Eu, \NomeAutor, discente regularmente matriculado(a) no Programa \NomeVinculo\
+do IDP, Instituto Brasileiro de Ensino, Desenvolvimento e Pesquisa, matrícula
+nº \MatriculaPreenchivel,
+declaro, para fins de marcação e realização de banca de
+\mbox{\opcaotermo qualificação} \mbox{\opcaotermo defesa}, o que segue.
+
+\parterm 1. Declaro que o trabalho intitulado ``\TituloCompletoTrabalho''
+é de minha autoria, elaborado em conformidade com os princípios éticos da pesquisa
+científica, com as normas institucionais do IDP e com a legislação brasileira
+vigente, e que todas as análises, interpretações, conclusões e recomendações nele
+apresentadas são de minha responsabilidade intelectual, devidamente fundamentadas
+e referenciadas.
+
+\parterm 2. Quanto ao uso de ferramentas de inteligência artificial, informo o que segue.
+
+\opcaotermo não utilizei ferramentas de IA durante a elaboração deste trabalho; ou
+
+\opcaotermo utilizei ferramentas de IA exclusivamente como apoio, sem prejuízo da
+autoria intelectual e da responsabilidade científica.
+
+\parterm 3. Quando utilizadas, as ferramentas de IA tiveram finalidade auxiliar, empregadas
+para os fins a seguir, que devem ser assinalados e detalhados.
+
+\opcaotermo apoio à organização de ideias e à estruturação do texto;
+
+\opcaotermo revisão gramatical e aprimoramento da clareza linguística;
+
+\opcaotermo sugestões de formatação e adequação às normas acadêmicas;
+
+\opcaotermo apoio à compreensão inicial de conceitos teóricos, depois verificados
+em fontes acadêmicas confiáveis;
+
+\opcaotermo apoio à busca e ao mapeamento de literatura, com verificação das
+referências nas fontes originais;
+
+\opcaotermo apoio à programação, ao pré-processamento ou à visualização de dados,
+com validação dos resultados;
+
+\opcaotermo outros usos auxiliares (especificar) \hrulefill
+
+\parterm 4. Declaro o uso das ferramentas
+\textcolor{termocampo}{(nome ou modelo, versão e data de uso)}:
+
+\hspace*{6mm}\rule{\dimexpr\linewidth-26mm\relax}{0.4pt}.
+
+\parterm 5. Declaro que nenhuma ferramenta de IA foi utilizada para a geração autônoma de
+conteúdo acadêmico original, tais como análises e discussão de resultados,
+interpretações, conclusões ou recomendações, sem a devida revisão crítica,
+validação teórico-metodológica e responsabilização de minha parte. Declaro,
+ainda, não ter inserido em ferramentas de terceiros dados pessoais, sensíveis,
+sigilosos ou não publicados sem as devidas garantias, em observância à Lei
+nº 13.709/2018.
+
+\parterm 6. Declaro estar ciente de que a prestação de informações falsas, a omissão de
+autoria ou a atribuição indevida de produção intelectual constituem práticas
+vedadas no meio acadêmico e podem ensejar responsabilização nos termos das
+normas institucionais do IDP e da legislação brasileira.
+
+\vspace{5mm}
+Por ser verdade, firmo a presente declaração.
+
+\vspace{5mm}
+Local e data \rule{90mm}{0.4pt}
+
+Assinatura, de preferência gov.br \rule{60mm}{0.4pt}
+
+Nome do(a) discente \NomeAutor
+
+Ciência do(a) orientador(a) \rule{65mm}{0.4pt}
+\end{document}

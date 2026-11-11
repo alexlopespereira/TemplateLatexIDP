@@ -1,8 +1,7 @@
 # Instruções do projeto — trabalho acadêmico do IDP em LaTeX
 
 Este repositório contém um **trabalho de conclusão de curso** (monografia, TCC,
-dissertação ou tese) do Instituto Brasileiro de Ensino, Desenvolvimento e
-Pesquisa — IDP, escrito em LaTeX com a classe `idp.cls`.
+dissertação ou tese) da Universidade IDP, escrito em LaTeX com a classe `idp.cls`.
 
 Você está ajudando um(a) **estudante** a redigir e formatar esse trabalho.
 O texto é dele(a); você é o redator técnico e o revisor.
@@ -10,10 +9,12 @@ O texto é dele(a); você é o redator técnico e o revisor.
 ## Comandos
 
 ```bash
-latexmk -pdf main.tex     # compila (chama pdflatex + biber + pdflatex ×2)
+latexmk -xelatex main.tex # compila com Times New Roman instalada + biber
 latexmk -c                # limpa auxiliares
 latexmk -C                # limpa tudo, inclusive main.pdf
 ```
+
+Compile também `latexmk -xelatex termo-autoria-ia.tex` se os metadados ou o termo mudarem.
 
 Sempre compile depois de editar `.tex` ou `.bib`, e leia o log antes de dizer
 que terminou. Erros de LaTeX aparecem em `main.log` com o prefixo `!`.
@@ -69,10 +70,13 @@ Use sempre `\texorpdfstring{versão TeX}{versão PDF}`:
 \section[\texorpdfstring{\MakeUppercase{Título}}{Título}]{Título}
 ```
 
-### `idp.cls` é intocável
+### `idp.cls` no uso pelo estudante
 
-A classe reproduz medidas extraídas do PDF oficial do IDP
-(`templateMonografia_ou_TCC.pdf`, incluído no repositório) e implementa a ABNT.
+A classe segue obrigatoriamente o template Word IDP de 2026; o manual apenas
+complementa pontos não definidos no template. O template prevalece em conflitos.
+As fontes e decisões sobre divergências estão no README.
+Uma manutenção da classe exige pedido explícito do responsável
+pelo template; o pedido de manutenção prevalece sobre esta restrição de uso.
 Alterá-la para "consertar" o visual de um trecho tira o trabalho da norma.
 
 Se o layout parecer errado, o problema está quase sempre na marcação do texto.
@@ -100,8 +104,14 @@ por conta própria.
 
 ### Seções
 
-`\section` = seção primária (`1 TÍTULO`, caixa alta, negrito, folha nova).
+`\section` = seção primária (`1 TÍTULO`, caixa alta, negrito, nova página).
 `\subsection` = `1.1 Título` (negrito). `\subsubsection` = `1.1.1 Título`.
+O terceiro nível não tem destaque; o quarto e o quinto são itálicos.
+Resumo usa corpo 12 e abstract usa 10, ambos com espaço simples, como instruído
+no template. Palavras-chave usam ponto e vírgula. Não force páginas ímpares.
+O termo avulso tem formatação própria e deve caber em uma página com os dados de exemplo.
+O nível compartilhado dos documentos está em `config/nivel.tex`.
+Use `\arquivofichacatalografica{...}` para inserir o PDF oficial da Biblioteca.
 
 * Escreva os títulos em **caixa normal** — a caixa alta é automática.
 * **Nunca digite números de seção** — a numeração é automática.
@@ -112,8 +122,8 @@ por conta própria.
 
 | Situação | Comando |
 |---|---|
-| autor entre parênteses | `\parencite{chave}` → (SILVA, 2020) |
-| com página | `\parencite[p.~45]{chave}` → (SILVA, 2020, p. 45) |
+| autor entre parênteses | `\parencite{chave}` → (Silva, 2020) |
+| com página | `\parencite[p.~45]{chave}` → (Silva, 2020, p. 45) |
 | autor no corpo da frase | `\citeonline{chave}` → Silva (2020) |
 | com página | `\citeonline[p.~45]{chave}` → Silva (2020, p. 45) |
 
@@ -133,6 +143,9 @@ Citação direta de até 3 linhas fica no corpo do parágrafo, entre `` `` '' ``
 Ordem obrigatória: **`\caption` → `\label` → conteúdo → `\fonte{}`**.
 A legenda vai acima e a fonte abaixo — o template já cuida disso, desde que a
 ordem seja respeitada.
+Figuras usam legenda em corpo 9 e itálico, conforme o Word. As demais legendas
+e a indicação de fonte usam corpo 10. Para alinhar a fonte à esquerda sob uma
+imagem centralizada, use `\fonte[largura]{texto}`; sem largura, ela fica centralizada.
 
 ```latex
 \begin{figure}[htb]
