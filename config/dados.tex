@@ -23,6 +23,7 @@
 \titulotraduzido{Title of the work}               % opcional (para o abstract)
 
 \autor{Nome Completo do Autor}                    % OBRIGATÓRIO
+\matricula{}                                     % opcional: termo de autoria/IA
 \autorficha{SOBRENOME, Nome}                      % OBRIGATÓRIO (formato invertido)
 
 \orientador{Prof. Dr. Nome Completo do Orientador}  % OBRIGATÓRIO
@@ -31,7 +32,7 @@
 %% --- Vínculo institucional -------------------------------------------------
 \curso{Direito}                          % OBRIGATÓRIO em bacharelado/especialização
 \programa{Direito Constitucional}        % OBRIGATÓRIO em mestrado/doutorado
-\area{}                                  % área de concentração (pós-graduação)
+\area{Nome da área de concentração}       % OBRIGATÓRIO mestrado/doutorado
 \linhapesquisa{}                         % linha de pesquisa (pós-graduação)
 
 \cidade{Brasília}                        % usada na folha de aprovação
@@ -42,22 +43,29 @@
 %% Informe APENAS a data; a cidade vem de \cidade acima.
 \datadefesa{15 de dezembro de 2026}      % OBRIGATÓRIO -> "Brasília, 15 de ... ."
 
-%% Banca: \membrobanca[Instituição]{Nome}{Função}   (instituição é opcional)
-\membrobanca{Prof. Dr. Nome Completo do Orientador}{Orientador}
-\membrobanca{Prof. Dr. Nome Completo do Examinador 1}{Examinador}
-\membrobanca[Universidade de Brasília]{Prof. Dr. Nome do Examinador Externo}{Examinador}
+%% Banca do modelo: nome, ID Lattes/ORCID, função e instituição.
+%% Os identificadores abaixo sao campos de exemplo, a preencher.
+%% A chamada antiga \membrobanca[Instituição]{Nome}{Função} continua válida.
+\membrobancacomidentificador[IDP]{Prof. Dr. Nome Completo do Orientador}{ID Lattes ou ORCID}{Orientador}
+\membrobancacomidentificador[IDP]{Prof. Dr. Nome Completo do Examinador 1}{ID Lattes ou ORCID}{Examinador interno}
+\membrobancacomidentificador[SIGLA IES]{Prof. Dr. Nome do Examinador Externo 1}{ID Lattes ou ORCID}{Examinador externo}
+\membrobancacomidentificador[SIGLA IES]{Prof. Dr. Nome do Examinador Externo 2}{ID Lattes ou ORCID}{Examinador externo}
+%% Ajuste a composição conforme a banca aprovada pelo programa.
 
 %% --- Ficha catalográfica ---------------------------------------------------
 %% A ficha OFICIAL é elaborada pela Biblioteca Ministro Moreira Alves.
-%% Solicite por biblioteca@idp.edu.br e transcreva os dados recebidos aqui.
+%% Solicite por biblioteca@idp.edu.br e insira o PDF oficial abaixo.
+%% O modo `entrega' exige esse PDF. Sem ele, a classe gera apenas RASCUNHO.
+% \arquivofichacatalografica{pretextual/ficha-catalografica-oficial.pdf}
+%% Os campos abaixo alimentam SOMENTE o rascunho; nao substituem a Biblioteca.
 \cutter{}                                % notação Cutter fornecida pela Biblioteca
 \numeropaginas{00}                       % OBRIGATÓRIO: total de folhas
 \cdd{XXX}                                % OBRIGATÓRIO: Classificação Decimal de Dewey
 \assuntos{1. Palavra-chave. 2. Palavra-chave. 3. Palavra-chave.}
 
 %% --- Resumo ----------------------------------------------------------------
-\palavraschave{Termo 1. Termo 2. Termo 3. Termo 4. Termo 5.}   % OBRIGATÓRIO
-\keywords{Word 1. Word 2. Word 3. Word 4. Word 5.}             % OBRIGATÓRIO
+\palavraschave{Termo 1; termo 2; termo 3; termo 4; termo 5.}   % OBRIGATÓRIO
+\keywords{Word 1; word 2; word 3; word 4; word 5.}             % OBRIGATÓRIO
 
 %% --- Sobreposições opcionais -----------------------------------------------
 %% Normalmente você NÃO precisa mexer daqui para baixo.
@@ -65,8 +73,7 @@
 %% Texto da natureza do trabalho. Por padrão é gerado a partir da opção da
 %% classe (bacharelado/especializacao/mestrado/doutorado).
 % \preambulo{Monografia apresentada como requisito para obtenção do título de
-%            bacharel em Direito do Instituto Brasileiro de Ensino,
-%            Desenvolvimento e Pesquisa -- IDP.}
+%            bacharel em Direito da Universidade IDP.}
 
 %% Tipo do trabalho na ficha catalográfica (padrão: Monografia/Dissertação/Tese)
 % \tipotrabalho{Trabalho de Conclusão de Curso}
@@ -75,5 +82,5 @@
 % \datadefesacompleta{Aprovada em 15 de dezembro de 2026.}
 
 %% Logotipo da capa
-% \logo{figuras/idp-logo.png}
+% \logo{figuras/idp-universidade.jpeg}
 % \semlogo

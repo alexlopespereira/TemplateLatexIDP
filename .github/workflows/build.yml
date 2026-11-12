@@ -1,4 +1,4 @@
-name: Compilar o PDF
+name: Compilar os PDFs
 
 on:
   push:
@@ -11,16 +11,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compilar main.tex
+      - name: Compilar trabalho e termo avulso
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: main.tex
+          root_file: |
+            main.tex
+            termo-autoria-ia.tex
           latexmk_use_lualatex: false
-          args: -pdf -interaction=nonstopmode -file-line-error
+          args: -xelatex -interaction=nonstopmode -file-line-error
           extra_system_packages: ""
 
-      - name: Publicar o PDF como artefato
+      - name: Publicar os PDFs como artefato
         uses: actions/upload-artifact@v4
         with:
           name: main-pdf
-          path: main.pdf
+          path: |
+            main.pdf
+            termo-autoria-ia.pdf

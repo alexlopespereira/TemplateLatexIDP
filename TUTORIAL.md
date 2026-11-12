@@ -8,6 +8,10 @@ Você não precisa saber LaTeX para começar. Precisa saber **escrever** e
 **revisar** — o assistente cuida da marcação, e este template cuida da
 formatação ABNT/IDP.
 
+O template institucional Word de 2026 é obrigatório e prevalece nas
+divergências. O manual complementa apenas o que o template não define.
+Para reproduzir a fonte do Word, use XeLaTeX com Times New Roman instalada.
+
 **Índice**
 
 1. [Preparando o ambiente](#1-preparando-o-ambiente)
@@ -155,13 +159,13 @@ e nos metadados do PDF sai daqui. Você digita cada dado **uma única vez**.
 %% --- Defesa ---
 \datadefesa{15 de dezembro de 2026}        % SÓ a data; a cidade vem de \cidade
 
-\membrobanca{Prof. Dr. João Carlos Pereira}{Orientador}
-\membrobanca{Profa. Dra. Ana Lima}{Examinadora}
-\membrobanca[Universidade de Brasília]{Prof. Dr. Pedro Rocha}{Examinador}
+\membrobancacomidentificador[IDP]{Prof. Dr. João Carlos Pereira}{ID Lattes ou ORCID}{Orientador}
+\membrobancacomidentificador[IDP]{Profa. Dra. Ana Lima}{ID Lattes ou ORCID}{Examinadora interna}
+\membrobancacomidentificador[Universidade de Brasília]{Prof. Dr. Pedro Rocha}{ID Lattes ou ORCID}{Examinador externo}
 
 %% --- Resumo ---
-\palavraschave{Direitos fundamentais. Eficácia horizontal. STF.}
-\keywords{Fundamental rights. Horizontal effect. Brazilian Supreme Court.}
+\palavraschave{direitos fundamentais; eficácia horizontal; STF.}
+\keywords{fundamental rights; horizontal effect; Brazilian Supreme Court.}
 ```
 
 Repare em dois detalhes que evitam erro:
@@ -170,8 +174,10 @@ Repare em dois detalhes que evitam erro:
   é montada com o `\cidade`. Assim você não corre o risco de mudar a cidade num
   campo e esquecer do outro. Se o seu programa exigir outra redação, use
   `\datadefesacompleta{Aprovada em 15 de dezembro de 2026.}`.
-* **`\membrobanca` aceita a instituição** entre colchetes, antes do nome — útil
-  para examinador externo ao IDP. É opcional.
+* **`\membrobancacomidentificador` inclui instituição e ID Lattes/ORCID**, como
+  no modelo. A chamada antiga `\membrobanca` continua disponível sem identificador.
+  Informe as instituições de todos os membros e ajuste sua quantidade à banca
+  aprovada pelo programa; o exemplo principal acompanha os quatro blocos do Word.
 
 ### A tabela completa dos campos
 
@@ -181,35 +187,38 @@ Repare em dois detalhes que evitam erro:
 | `\subtitulo` | — | junto do título |
 | `\titulotraduzido` | — | disponível para o *abstract* |
 | `\autor` | ✅ | capa, rosto, aprovação, metadados |
-| `\autorficha` | ✅ | ficha catalográfica (formato invertido) |
+| `\autorficha` | apenas no rascunho gerado | ficha catalográfica (formato invertido) |
 | `\orientador` | ✅ | capa, rosto, aprovação, ficha |
 | `\coorientador` | — | rosto e aprovação, se preenchido |
 | `\curso` | ✅ graduação/especialização | capa, rosto, ficha |
-| `\programa` | ✅ mestrado/doutorado | rosto, aprovação |
-| `\area` | — | rosto e aprovação, como "Área de concentração" |
+| `\programa` | ✅ mestrado/doutorado | capa, rosto, aprovação, termo |
+| `\area` | ✅ mestrado/doutorado | natureza do trabalho na folha de rosto |
 | `\linhapesquisa` | — | rosto e aprovação |
 | `\cidade` | — | folha de aprovação |
 | `\local` | — | capa e folha de rosto |
 | `\data` | — | capa, rosto, ficha |
 | `\datadefesa` | ✅ | folha de aprovação |
 | `\membrobanca` | ✅ | folha de aprovação (repita para cada membro) |
+| `\membrobancacomidentificador` | recomendado pelo modelo | banca com instituição e ID Lattes/ORCID |
 | `\palavraschave` | ✅ | resumo |
-| `\keywords` | ✅ | *abstract* |
+| `\keywords` | ✅ mestrado/doutorado | *abstract* |
 | `\cutter` | — | ficha catalográfica |
-| `\numeropaginas` | ✅ | ficha catalográfica |
-| `\cdd` | ✅ | ficha catalográfica |
+| `\numeropaginas` | apenas no rascunho gerado | ficha catalográfica |
+| `\cdd` | apenas no rascunho gerado | ficha catalográfica |
 | `\assuntos` | — | ficha; se vazio, usa as palavras-chave |
+| `\arquivofichacatalografica` | ✅ na entrega | PDF da ficha oficial da Biblioteca |
+| `\matricula` | — | termo avulso; vazio deixa uma linha para preencher |
 
-Depois, em `main.tex`, escolha o tipo de trabalho:
+Depois, em `config/nivel.tex`, escolha o tipo de trabalho:
 
 ```latex
-\documentclass[mestrado]{idp}    % bacharelado | especializacao | mestrado | doutorado
+\def\NivelTrabalho{mestrado}    % bacharelado | especializacao | mestrado | doutorado
 ```
 
 O texto da natureza do trabalho (“Dissertação apresentada ao programa de
 pós-graduação em…”) é gerado automaticamente a partir dessa opção. Essa é a
-**única** informação do trabalho que não fica em `dados.tex` — ela precisa ser
-conhecida antes de o arquivo ser lido.
+**única** informação do trabalho que não fica em `dados.tex`; ela é compartilhada
+pelo trabalho e pelo termo avulso de autoria e uso de IA.
 
 ### Reaproveitando os dados no texto
 
@@ -241,7 +250,7 @@ Class idp Warning: Campo nao preenchido em config/dados.tex: cdd.
 Ao gerar a **versão final**, acrescente a opção `entrega`:
 
 ```latex
-\documentclass[mestrado,entrega]{idp}
+\documentclass[\NivelTrabalho,entrega]{idp}
 ```
 
 Com ela o aviso vira erro: a compilação aborta e **nenhum PDF é gerado**
@@ -251,15 +260,19 @@ monografia com `XXXX` na ficha catalográfica — um erro mais comum do que pare
 ### A ficha catalográfica
 
 A ficha oficial é elaborada **pela Biblioteca Ministro Moreira Alves**. Solicite
-pelo e-mail **biblioteca@idp.edu.br** e, quando receber, transcreva os dados em
-`config/dados.tex` (`\cutter`, `\numeropaginas`, `\cdd`, `\assuntos`).
+pelo e-mail **biblioteca@idp.edu.br** e, quando receber, salve o PDF em
+`pretextual/`. Em `config/dados.tex`, informe
+`\arquivofichacatalografica{pretextual/ficha-catalografica-oficial.pdf}`.
+Os campos `\cutter`, `\numeropaginas`, `\cdd` e `\assuntos` alimentam somente
+o rascunho identificado; a opção `entrega` exige o PDF oficial.
 
 ---
 
 ## 5. Compilando pela primeira vez
 
 ```bash
-latexmk -pdf main.tex
+latexmk -xelatex main.tex
+latexmk -xelatex termo-autoria-ia.tex  # termo avulso, opções e assinaturas em branco
 ```
 
 Abra o `main.pdf` gerado. Na primeira execução o MiKTeX pode baixar pacotes —
@@ -268,13 +281,13 @@ isso demora alguns minutos, mas acontece só uma vez.
 Comandos úteis:
 
 ```bash
-latexmk -pdf -pvc main.tex   # recompila sozinho a cada vez que você salva
+latexmk -xelatex -pvc main.tex   # recompila sozinho a cada vez que você salva
 latexmk -c                   # apaga arquivos auxiliares (.aux, .log…)
 latexmk -C                   # apaga tudo, inclusive o PDF
 ```
 
 > Se `latexmk` não existir no seu PATH, use a sequência manual:
-> `pdflatex main` → `biber main` → `pdflatex main` → `pdflatex main`.
+> `xelatex main` → `biber main` → `xelatex main` → `xelatex main`.
 > São quatro passos porque o sumário, as listas e as referências precisam de
 > duas passadas para "assentar".
 
@@ -305,7 +318,7 @@ Regras que o template já aplica sozinho:
 * a numeração (`2`, `2.1`, `2.1.1`) é automática — **nunca digite os números**;
 * a caixa alta e o negrito das seções primárias são automáticos — escreva
   `\section{Referencial teórico}` em caixa normal;
-* cada seção primária começa em folha nova;
+* cada seção primária começa em nova página, par ou ímpar;
 * o sumário é gerado a partir desses comandos.
 
 ### Adicionando um capítulo novo
@@ -373,8 +386,8 @@ Copie o modelo mais próximo e edite.
 
 | Você quer | Escreva | Sai assim |
 |---|---|---|
-| Autor dentro dos parênteses | `\parencite{silva2020}` | (SILVA, 2020) |
-| Autor com página | `\parencite[p.~45]{silva2020}` | (SILVA, 2020, p. 45) |
+| Autor dentro dos parênteses | `\parencite{silva2020}` | (Silva, 2020) |
+| Autor com página | `\parencite[p.~45]{silva2020}` | (Silva, 2020, p. 45) |
 | Autor como sujeito da frase | `\citeonline{silva2020}` | Silva (2020) |
 | Autor como sujeito, com página | `\citeonline[p.~45]{silva2020}` | Silva (2020, p. 45) |
 
@@ -410,7 +423,7 @@ de aceitar (veja a [seção 9](#9-usando-o-claude-code-ou-o-codex)).
 
 ## 8. Figuras, tabelas, quadros e gráficos
 
-O padrão ABNT é: **legenda acima**, elemento no meio, **fonte abaixo**. O
+O padrão é: **legenda acima**, elemento no meio, **fonte abaixo**. O
 template faz isso automaticamente — você só precisa escrever na ordem certa.
 
 Coloque suas imagens em `figuras/`.
@@ -522,7 +535,7 @@ específicos.
 
 **Compilar e corrigir:**
 
-> Compile com `latexmk -pdf main.tex`, leia o log e corrija os erros de LaTeX.
+> Compile com `latexmk -xelatex main.tex`, leia o log e corrija os erros de LaTeX.
 > Não altere o conteúdo do texto nem o `idp.cls` — corrija apenas a marcação.
 > No final, me diga em uma frase o que estava errado.
 
@@ -573,7 +586,7 @@ no próprio repositório:
 | Sintoma | Causa provável | Solução |
 |---|---|---|
 | `Undefined control sequence` | comando digitado errado ou pacote faltando | veja a linha indicada no log; confira a grafia |
-| Citação aparece como `[silva2020]` ou em negrito estranho | a chave não existe no `.bib`, ou o `biber` não rodou | rode `latexmk -pdf main.tex` de novo (ele chama o `biber` sozinho) |
+| Citação aparece como `[silva2020]` ou em negrito estranho | a chave não existe no `.bib`, ou o `biber` não rodou | rode `latexmk -xelatex main.tex` de novo (ele chama o `biber` sozinho) |
 | Sumário desatualizado | falta uma passada de compilação | `latexmk` resolve; manualmente, compile 2× |
 | `Missing $ inserted` | um `_`, `^`, `&` ou `%` solto no texto | escape-o: `\_`, `\^{}`, `\&`, `\%` |
 | Figura não aparece | caminho ou extensão errados | confira que o arquivo está em `figuras/` e o nome bate (maiúsculas contam) |
@@ -586,7 +599,7 @@ no próprio repositório:
 Se travar de vez: apague os auxiliares e recomece do zero.
 
 ```bash
-latexmk -C && latexmk -pdf main.tex
+latexmk -C && latexmk -xelatex main.tex
 ```
 
 ---
@@ -596,7 +609,7 @@ latexmk -C && latexmk -pdf main.tex
 **Formatação** *(o template já garante — confira mesmo assim)*
 
 - [ ] A4, margens 3/2/3/2 cm
-- [ ] Times New Roman 12, entrelinhas 1,5
+- [ ] Times New Roman 12 e entrelinhas 1,5 no texto; resumo 12 e abstract 10 com espaço simples
 - [ ] Recuo de parágrafo 1,25 cm
 - [ ] Numeração no canto superior direito, começando a aparecer na introdução
 - [ ] Citações longas com recuo de 4 cm, corpo 10, entrelinha simples
@@ -607,7 +620,7 @@ latexmk -C && latexmk -pdf main.tex
       nenhum campo de `config/dados.tex` ficou pendente
 - [ ] Nenhuma ocorrência de `[[ PREENCHER` no PDF
 - [ ] Ficha catalográfica **oficial**, solicitada em biblioteca@idp.edu.br
-- [ ] Nomes da banca conferidos, com a instituição dos examinadores externos
+- [ ] Nomes, identificadores Lattes/ORCID e instituições de todos os membros da banca conferidos
 
 **Conteúdo**
 
