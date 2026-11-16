@@ -275,6 +275,26 @@ não é anexada automaticamente: o regulamento prevê manifestação do autor no
 Portal do Aluno (art. 13, §1º). Não se presume uma licença Creative Commons.
 O antigo `templateMonografia_ou_TCC.pdf` permanece apenas como referência histórica.
 
+## Avaliar pendências do aluno
+
+A skill [idp-pendencias-dissertacao](.agents/skills/idp-pendencias-dissertacao/SKILL.md)
+confere os artefatos da pasta local e orienta sobre qualificação, defesa,
+pós-defesa, Biblioteca e artigo derivado. Use, por exemplo:
+
+```text
+Use $idp-pendencias-dissertacao para avaliar minha pasta para a qualificação.
+```
+
+Ela cruza os arquivos com as orientações da Turma 1/2026 e as fontes da
+Biblioteca, aponta inconsistências e documentos não localizados e distingue
+evidência documental de confirmação administrativa. Os prazos da turma não
+são automaticamente aplicados a outros programas. A avaliação não modifica
+o trabalho nem realiza envios ou requerimentos pelo aluno.
+
+O [Regulamento do Repositório Institucional de 2026](orientacoes-idp/Regulamento_Repositorio_IDP_2026.pdf)
+é mantido com a skill como fonte de consulta, em sua versão original, sem
+incorporar propostas de alteração não aprovadas.
+
 ## Verificação
 
 ```bash
