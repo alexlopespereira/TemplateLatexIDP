@@ -149,7 +149,8 @@ for level in ['bacharelado', 'especializacao', 'mestrado', 'doutorado']:
     keyword_sizes=[]
     for page in pdf.pages:
         def inspect_keywords(value,cm,tm,font,size):
-            if 'Keywords:' in value: keyword_sizes.append(size)
+            if 'Keywords:' in value:
+                keyword_sizes.append(size)
         page.extract_text(visitor_text=inspect_keywords)
     assert keyword_sizes and all(abs(s-12)<.15 for s in keyword_sizes), 'Keywords fora do corpo 12'
     a, b = map(int, re.findall(r'IDPTEST-PRIMARIA-[AB]=(\d+)', log))
