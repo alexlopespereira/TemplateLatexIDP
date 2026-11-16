@@ -10,6 +10,8 @@ formatação ABNT/IDP.
 
 O template institucional Word de 2026 é obrigatório e prevalece nas
 divergências. O manual complementa apenas o que o template não define.
+Nos cinco pontos revistos, vale a orientação da Biblioteca de 12/11/2026,
+registrada em [ajustes da Biblioteca](docs/ajustes-biblioteca-2026-11-12.md).
 Para reproduzir a fonte do Word, use XeLaTeX com Times New Roman instalada.
 
 **Índice**
@@ -131,7 +133,7 @@ entram. Você só o edita para **adicionar ou remover um capítulo**.
 ## 4. Preencha seus dados
 
 `config/dados.tex` é a **fonte única da verdade** do seu trabalho. Tudo o que
-aparece na capa, na folha de rosto, na ficha catalográfica, na folha de aprovação
+aparece na capa, na folha de rosto, na folha de aprovação
 e nos metadados do PDF sai daqui. Você digita cada dado **uma única vez**.
 
 ```latex
@@ -141,7 +143,6 @@ e nos metadados do PDF sai daqui. Você digita cada dado **uma única vez**.
 \titulotraduzido{The horizontal effect of fundamental rights}  % opcional
 
 \autor{Maria Aparecida de Souza}
-\autorficha{SOUZA, Maria Aparecida de}     % formato invertido, p/ a ficha
 
 \orientador{Prof. Dr. João Carlos Pereira}
 \coorientador{}                            % vazio se não houver
@@ -183,16 +184,16 @@ Repare em dois detalhes que evitam erro:
 
 | Campo | Obrigatório? | Onde aparece |
 |---|---|---|
-| `\titulo` | ✅ | capa, folha de rosto, aprovação, ficha, metadados |
+| `\titulo` | ✅ | capa, folha de rosto, aprovação, metadados |
 | `\subtitulo` | — | junto do título |
 | `\titulotraduzido` | — | disponível para o *abstract* |
 | `\autor` | ✅ | capa, rosto, aprovação, metadados |
-| `\autorficha` | apenas no rascunho gerado | ficha catalográfica (formato invertido) |
-| `\orientador` | ✅ | capa, rosto, aprovação, ficha |
+| `\autorficha` | legado, sem efeito no PDF | aceito para compatibilidade; não gera ficha |
+| `\orientador` | ✅ | capa, rosto, aprovação |
 | `\coorientador` | — | rosto e aprovação, se preenchido |
-| `\curso` | ✅ graduação/especialização | capa, rosto, ficha |
+| `\curso` | ✅ graduação/especialização | capa e rosto |
 | `\programa` | ✅ mestrado/doutorado | capa, rosto, aprovação, termo |
-| `\area` | ✅ mestrado/doutorado | natureza do trabalho na folha de rosto |
+| `\area` | ✅ mestrado/doutorado | natureza do trabalho no rosto e na aprovação |
 | `\linhapesquisa` | — | rosto e aprovação |
 | `\cidade` | — | folha de aprovação |
 | `\local` | — | capa e folha de rosto |
@@ -202,10 +203,10 @@ Repare em dois detalhes que evitam erro:
 | `\membrobancacomidentificador` | recomendado pelo modelo | banca com instituição e ID Lattes/ORCID |
 | `\palavraschave` | ✅ | resumo |
 | `\keywords` | ✅ mestrado/doutorado | *abstract* |
-| `\cutter` | — | ficha catalográfica |
-| `\numeropaginas` | apenas no rascunho gerado | ficha catalográfica |
-| `\cdd` | apenas no rascunho gerado | ficha catalográfica |
-| `\assuntos` | — | ficha; se vazio, usa as palavras-chave |
+| `\cutter` | legado, sem efeito no PDF | não gera ficha |
+| `\numeropaginas` | legado, sem efeito no PDF | não gera ficha |
+| `\cdd` | legado, sem efeito no PDF | não gera ficha |
+| `\assuntos` | legado, sem efeito no PDF | não gera ficha |
 | `\arquivofichacatalografica` | ✅ na entrega | PDF da ficha oficial da Biblioteca |
 | `\matricula` | — | termo avulso; vazio deixa uma linha para preencher |
 
@@ -241,10 +242,10 @@ Ao meu orientador, \NomeOrientador, agradeço a paciência e o rigor.
 ### Campos que você esqueceu
 
 Campo obrigatório em branco **não passa despercebido**. Ele aparece no PDF como
-`[[ PREENCHER: cdd ]]` e gera aviso na compilação, nomeando o campo:
+`[[ PREENCHER: titulo ]]` e gera aviso na compilação, nomeando o campo:
 
 ```
-Class idp Warning: Campo nao preenchido em config/dados.tex: cdd.
+Class idp Warning: Campo nao preenchido em config/dados.tex: titulo.
 ```
 
 Ao gerar a **versão final**, acrescente a opção `entrega`:
@@ -260,11 +261,16 @@ monografia com `XXXX` na ficha catalográfica — um erro mais comum do que pare
 ### A ficha catalográfica
 
 A ficha oficial é elaborada **pela Biblioteca Ministro Moreira Alves**. Solicite
-pelo e-mail **biblioteca@idp.edu.br** e, quando receber, salve o PDF em
+pelo e-mail **biblioteca@idp.edu.br** ou pelo
+[formulário da Biblioteca](https://forms.cloud.microsoft/r/wPvmB4C7v6) e,
+quando receber, salve o PDF em
 `pretextual/`. Em `config/dados.tex`, informe
 `\arquivofichacatalografica{pretextual/ficha-catalografica-oficial.pdf}`.
-Os campos `\cutter`, `\numeropaginas`, `\cdd` e `\assuntos` alimentam somente
-o rascunho identificado; a opção `entrega` exige o PDF oficial.
+Sem o PDF oficial, aparece apenas a orientação para solicitar a ficha, com
+e-mail, formulário, QR code e o aviso sobre o Código de Catalogação
+Anglo-Americano vigente. O template não gera ficha nem rascunho de ficha.
+A opção `entrega` exige o PDF oficial; os antigos campos catalográficos
+continuam aceitos para compatibilidade, sem efeito no PDF.
 
 ---
 
@@ -433,7 +439,9 @@ Coloque suas imagens em `figuras/`.
   \caption{Organograma do Poder Judiciário}
   \label{fig:organograma}
   \centering
-  \includegraphics[width=0.8\textwidth]{figuras/organograma.png}
+  \begin{elemento}
+    \includegraphics[width=0.8\textwidth]{figuras/organograma.png}
+  \end{elemento}
   \fonte{Brasil (2023).}
 \end{figure}
 ```
@@ -447,6 +455,7 @@ própria lista pré-textual.
   \caption{Distribuição dos acórdãos por ano}
   \label{tab:acordaos}
   \centering
+  \begin{elemento}
   \begin{tabular}{lrr}
     \toprule
     \textbf{Ano} & \textbf{Acórdãos} & \textbf{\%} \\
@@ -455,9 +464,14 @@ própria lista pré-textual.
     2022 &  90 & 30,0 \\
     \bottomrule
   \end{tabular}
+  \end{elemento}
   \fonte{Elaborada pela autora (2026).}
 \end{table}
 ```
+
+O ambiente `elemento` mede a imagem ou tabela centralizada para alinhar
+`\fonte` à esquerda da sua largura real. Em documentos anteriores, também
+é possível informar `\fonte[largura]{texto}` explicitamente.
 
 **Toda ilustração precisa ser citada no texto** antes de aparecer:
 
@@ -609,7 +623,7 @@ latexmk -C && latexmk -xelatex main.tex
 **Formatação** *(o template já garante — confira mesmo assim)*
 
 - [ ] A4, margens 3/2/3/2 cm
-- [ ] Times New Roman 12 e entrelinhas 1,5 no texto; resumo 12 e abstract 10 com espaço simples
+- [ ] Times New Roman 12 e entrelinhas 1,5 no texto; resumo, abstract e Keywords 12 com espaço simples
 - [ ] Recuo de parágrafo 1,25 cm
 - [ ] Numeração no canto superior direito, começando a aparecer na introdução
 - [ ] Citações longas com recuo de 4 cm, corpo 10, entrelinha simples

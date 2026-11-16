@@ -1,5 +1,9 @@
 # Comparação e correção dos modelos IDP — 11/11/2026
 
+Registro histórico. Os cinco pontos revistos posteriormente pela Biblioteca
+em 12/11/2026 são tratados em [ajustes-biblioteca-2026-11-12.md](ajustes-biblioteca-2026-11-12.md)
+e substituem as conclusões anteriores nesses pontos.
+
 Foram concluídas três rodadas de comparação, correção, compilação e inspeção
 dos PDFs. O template institucional é obrigatório; o manual complementa apenas
 os pontos que o template não define. A denominação Universidade IDP, o logo

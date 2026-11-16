@@ -25,11 +25,13 @@ envolvidos na sua questão problema.
   \caption{Título da Figura}
   \label{fig:exemplo}
   \centering
+  \begin{elemento}
   % PNG original do Word, inalterado. srcRect convertido em pixels inteiros;
   % sem metadado de resolucao, o LaTeX usa 72 dpi (1 pixel = 1 bp).
   \includegraphics[width=102.78mm,height=57.83mm,
     trim=5bp 17bp 22bp 73bp,clip]{figuras/ilustracao-modelo-2026.png}
-  \fonte[100mm]{Niemeyer, 2008.}
+  \end{elemento}
+  \fonte{Niemeyer, 2008.}
 \end{figure}
 
 Caso a ilustração seja de sua autoria, escreva \textbf{Fonte:} Do autor
@@ -84,6 +86,7 @@ NBR 10520 \parencite{abnt10520}.
   \caption{Título do quadro}
   \label{qua:exemplo}
   \centering
+  \begin{elemento}
   \begin{tabular}{ll}
     \toprule
     \textbf{Elemento} & \textbf{Norma aplicável} \\
@@ -95,6 +98,7 @@ NBR 10520 \parencite{abnt10520}.
     Resumo               & NBR 6028  \\
     \bottomrule
   \end{tabular}
+  \end{elemento}
   \fonte{Elaborado pelo autor (\the\year).}
 \end{quadro}
 
@@ -103,6 +107,7 @@ NBR 10520 \parencite{abnt10520}.
   \caption{Nome da Tabela 1}
   \label{tab:exemplo}
   \centering
+  \begin{elemento}
   \begin{tabular}{lrr}
     \toprule
     \textbf{Categoria} & \textbf{Frequência} & \textbf{\%} \\
@@ -114,6 +119,7 @@ NBR 10520 \parencite{abnt10520}.
     \textbf{Total} & \textbf{300} & \textbf{100,0} \\
     \bottomrule
   \end{tabular}
+  \end{elemento}
   \fonte{Dados da pesquisa (\the\year).}
 \end{table}
 
@@ -122,6 +128,8 @@ NBR 10520 \parencite{abnt10520}.
   \caption{Nome do Gráfico 1}
   \label{gra:exemplo}
   \centering
+  \begin{elemento}
   \includegraphics[width=0.55\textwidth]{figuras/exemplo-figura.png}
+  \end{elemento}
   \fonte{Elaborado pelo autor (\the\year).}
 \end{grafico}

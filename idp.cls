@@ -12,7 +12,7 @@
 %% Licenca: LPPL 1.3c
 %%=============================================================================
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{idp}[2026/11/11 v2.1 Modelo institucional IDP 2026]
+\ProvidesClass{idp}[2026/11/12 v2.2 Revisao da Biblioteca IDP]
 
 %%-----------------------------------------------------------------------------
 %% 1. OPCOES DA CLASSE
@@ -256,10 +256,11 @@
 %%-----------------------------------------------------------------------------
 %% 10. FIGURAS, QUADROS, GRAFICOS E TABELAS
 %%     Legenda ACIMA ("Figura 1 - Titulo"), fonte ABAIXO ("Fonte: ...").
-%%     Ambas em fonte 10, centralizadas, espacamento simples.
+%%     Fonte em corpo 10, alinhada a esquerda do elemento; legenda acima.
 %%-----------------------------------------------------------------------------
 \RequirePackage{graphicx}
 \RequirePackage{pdfpages}
+\RequirePackage{tikz}        % painel de solicitacao da ficha no modelo Word
 \RequirePackage{float}
 \RequirePackage{booktabs}
 \RequirePackage[labelsep=endash,justification=centering,
@@ -285,14 +286,36 @@
                     textfont=idpfigcap,labelsep=idpfigsep}
 \captionsetup[table]{position=top}
 
-% Linha "Fonte: ..." abaixo do elemento ilustrativo
-% Largura opcional: caixa centralizada com texto a esquerda, como na figura
-% do Word. Sem largura, conserva a centralizacao das chamadas antigas.
+% Mede o elemento centralizado para alinhar a fonte ao seu limite esquerdo.
+% Uso: \begin{elemento} imagem ou tabular \end{elemento}\fonte{...}
+\RequirePackage{etoolbox}
+\newsavebox{\idp@elementobox}
+\newlength{\idp@larguraelemento}
+\newenvironment{elemento}{%
+  \begin{lrbox}{\idp@elementobox}\ignorespaces
+}{%
+  \end{lrbox}%
+  \global\idp@larguraelemento=\wd\idp@elementobox\relax
+  {\centering\noindent\usebox{\idp@elementobox}\par}%
+}
+\AtBeginEnvironment{figure}{\global\idp@larguraelemento=0pt}
+\AtBeginEnvironment{table}{\global\idp@larguraelemento=0pt}
+\AtBeginEnvironment{quadro}{\global\idp@larguraelemento=0pt}
+\AtBeginEnvironment{gfc}{\global\idp@larguraelemento=0pt}
+\AtBeginEnvironment{grafico}{\global\idp@larguraelemento=0pt}
+% A largura explicita permanece aceita para documentos existentes.
 \newcommand{\fonte}[2][]{%
   \par\vspace{2pt}%
   {\centering\idpcorpodez
-   \if\relax\detokenize{#1}\relax Fonte:~#2\par
-   \else\begin{minipage}{#1}\raggedright Fonte:~#2\par\end{minipage}\par\fi}%
+   \if\relax\detokenize{#1}\relax
+     \ifdim\idp@larguraelemento>0pt
+       \def\idp@largurafonte{\idp@larguraelemento}%
+     \else
+       \def\idp@largurafonte{\linewidth}%
+       \ClassWarning{idp}{Fonte sem elemento medido: use o ambiente elemento ou informe a largura em \string\fonte[largura]}%
+     \fi
+   \else\def\idp@largurafonte{#1}\fi
+   \begin{minipage}{\idp@largurafonte}\raggedright Fonte:~#2\par\end{minipage}\par}%
 }
 \newcommand{\nota}[1]{%
   \par\vspace{2pt}%
@@ -358,6 +381,9 @@
 \def\idp@logo{figuras/idp-universidade.jpeg} % logo fornecido, sem alteracoes
 \def\idp@fichapdf{}
 \def\idp@matricula{}
+% Resguardo minimo: 3,5 mm para o logo padrao de 57 mm de largura.
+\newlength{\idp@resguardologo}\setlength{\idp@resguardologo}{3.5mm}
+\newcommand{\resguardologo}[1]{\setlength{\idp@resguardologo}{#1}}
 
 \newcommand{\instituicao}[1]{\def\idp@instituicao{#1}}
 \newcommand{\titulo}[1]{\def\idp@titulo{#1}}
@@ -444,12 +470,7 @@
   \idp@confere{orientador}{\idp@orientador}%
   \idp@confere{datadefesa}{\idp@datadefesa}%
   \idp@confere{palavraschave}{\idp@palavraschave}%
-  % Dados catalograficos so alimentam o rascunho; PDF oficial os substitui.
-  \ifx\idp@fichapdf\@empty
-    \idp@confere{autorficha}{\idp@autorficha}%
-    \idp@confere{cdd}{\idp@cdd}%
-    \idp@confere{numeropaginas}{\idp@paginas}%
-  \fi
+  % Dados catalograficos sao responsabilidade da Biblioteca; nao sao gerados.
   % curso e programa sao mutuamente exclusivos: cobra so o que o nivel usa
   \ifx\idp@nivel\idp@n@mestrado
     \idp@confere{programa}{\idp@programa}%
@@ -525,14 +546,15 @@
     \idp@programa\ pela \idp@instituicao.%
   \fi\fi\fi
 }
-% A aprovacao tem nota propria no Word; nao repete a area da folha de rosto.
+% Biblioteca IDP, 12/11/2026: a aprovacao tambem deve indicar a area.
 \newcommand{\idp@preambuloaprovacao}{%
   \ifx\idp@nivel\idp@n@mestrado
     Disserta\c{c}\~ao apresentada ao programa de p\'os-gradua\c{c}\~ao em
-    \idp@programa, como parte do requisito para a obten\c{c}\~ao do t\'itulo de
+    \idp@programa, \'area de concentra\c{c}\~ao \idp@area, como parte do requisito para a obten\c{c}\~ao do t\'itulo de
     Mestre em \idp@programa\ pela \idp@instituicao.%
   \else\ifx\idp@nivel\idp@n@doutorado
     Tese apresentada ao programa de p\'os-gradua\c{c}\~ao em \idp@programa,
+    \'area de concentra\c{c}\~ao \idp@area,
     como parte do requisito para a obten\c{c}\~ao do t\'itulo de Doutor em
     \idp@programa\ pela \idp@instituicao.%
   \else\idp@preambulopadrao\fi\fi
@@ -585,14 +607,17 @@
     \ifx\idp@logo\@empty
       \vspace*{11.4mm}%
     \else
-      \vspace*{0mm}%
-      {\includegraphics[width=57mm,height=12mm,keepaspectratio]{\idp@logo}\par}%
-      \vspace{2mm}%
+      % O Word coloca a marca acima do texto, com cerca de 8,4 mm livres.
+      % Compensar o resguardo apenas no miolo deslocava a marca para baixo.
+      \vspace*{-3mm}%
+      {\setlength{\fboxsep}{\idp@resguardologo}%
+       \colorbox{white}{\includegraphics[width=57mm,height=12mm,keepaspectratio]{\idp@logo}}\par}%
+      \vspace{5mm}%
     \fi
     {\idp@instituicao\par}
     \vspace{0.7mm}
     {\idp@rotulocapa\ \NomeVinculo\par}
-    \vspace{80.7mm}
+    \vspace{80.7mm}%
     {\idpcorpo{16}{19.2}\idp@titulocompleto\par}
     \vspace{22.3mm}
     {\idp@autor\par}
@@ -639,8 +664,8 @@
         Solicite o PDF a Biblioteca e configure \string\arquivofichacatalografica.}%
       \stop
     \else
-      \ClassWarningNoLine{idp}{Ficha catalografica de RASCUNHO; solicitar PDF oficial a Biblioteca}%
-      \idp@ficharascunho
+      \ClassWarningNoLine{idp}{Ficha oficial nao fornecida; inserida apenas orientacao para solicita-la a Biblioteca}%
+      \idp@fichasolicitacao
     \fi
   \else
     \IfFileExists{\idp@fichapdf}{%
@@ -651,37 +676,34 @@
     }%
   \fi
 }
-\newcommand{\idp@ficharascunho}{%
+\newcommand{\idp@fichasolicitacao}{%
   \thispagestyle{idpsemnumero}%
-  \null\vfill
-  \begin{center}
-  \idpcorpodez
-  \begin{minipage}{150mm}
-    \setlength{\parindent}{0pt}
-    \rule{\linewidth}{0.4pt}\par\vspace{2mm}
-    \hspace*{0.6mm}\idp@cutter\hspace{10mm}\idp@autorficha\par\vspace{1.5mm}
-    \hspace*{15mm}\begin{minipage}{\dimexpr\linewidth-18mm\relax}
-      \idp@titulo\ifx\idp@subtitulo\@empty\else: \idp@subtitulo\fi\ /
-      \idp@autor. \textendash\ Bras\'ilia: IDP, \idp@data.\par\vspace{2mm}
-      \idp@paginas\ p.\par
-      Inclui bibliografia.\par\vspace{2mm}
-      Trabalho de Conclus\~ao de Curso (\idp@tipopadrao) \textendash\
-      \idp@instituicao, \idp@rotulovinculo\ \NomeVinculo, \idp@cidade, \idp@data.\par
-      Orientador: \idp@orientador.\par\vspace{2mm}
-      \ifx\idp@assuntos\@empty\idp@palavraschave\else\idp@assuntos\fi\
-      I. T\'itulo.\par
-      \hfill CDD: \idp@cdd\par
-    \end{minipage}\par\vspace{1mm}
-    \rule{\linewidth}{0.4pt}
-  \end{minipage}\par\vspace{3mm}
-  {\idpcorpodez\bfseries
-   RASCUNHO DE FICHA CATALOGR\'AFICA\par}
-  \end{center}
-  \vspace{8mm}
-  {\centering\idpcorpodez\itshape
-   A Biblioteca Ministro Moreira Alves oferece o servi\c{c}o de elabora\c{c}\~ao
-   de fichas catalogr\'aficas; solicite via e-mail para
-   biblioteca@idp.edu.br\par}
+  % Posicoes do Word fornecido: titulo a 60 mm; painel a 83,7 mm;
+  % QR a 133,5 mm. Nao ha composicao de ficha nem dados catalograficos.
+  \null
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north,inner sep=0pt] at ([xshift=5mm,yshift=-59.5mm]current page.north)
+      {\normalfont\normalsize Espa\c{c}o destinado \`a ficha catalogr\'afica.};
+    \draw[rounded corners=8mm,line width=0.8pt]
+      ([xshift=54mm,yshift=-83.7mm]current page.north west)
+      rectangle ([xshift=166mm,yshift=-131.4mm]current page.north west);
+    \node[anchor=north,inner sep=0pt] at ([xshift=5mm,yshift=-89mm]current page.north) {%
+      \begin{minipage}{104mm}
+        \espacosimples\normalsize\setlength{\parindent}{0pt}\centering
+        Solicite sua ficha para a biblioteca do IDP via e-mail para
+        \href{mailto:biblioteca@idp.edu.br}{\textcolor{blue}{\underline{biblioteca@idp.edu.br}}} ou pelo\par
+        \href{https://forms.cloud.microsoft/r/wPvmB4C7v6}{%
+          \textcolor{blue}{\underline{https://forms.cloud.microsoft/r/wPvmB4C7v6}}}\par
+        \vspace{\idplinhasimp}
+        \textcolor{red}{ATEN\c{C}\~AO!} Fichas que n\~ao estiverem de acordo com as normas
+        do C\'odigo de Cataloga\c{c}\~ao Anglo-Americano vigente n\~ao ser\~ao aceitas.\par
+      \end{minipage}};
+    \IfFileExists{figuras/solicitacao-ficha-biblioteca.png}{%
+      \node[anchor=north,inner sep=0pt] at ([xshift=5mm,yshift=-133.5mm]current page.north) {%
+        \href{https://forms.cloud.microsoft/r/wPvmB4C7v6}{%
+          \includegraphics[width=71.1mm]{figuras/solicitacao-ficha-biblioteca.png}}};
+    }{}
+  \end{tikzpicture}%
   \clearpage
 }
 
@@ -748,7 +770,7 @@
   \idp@tituloelemento{Agradecimentos}\espacoumemeio
 }{\clearpage}
 
-% --- RESUMO / ABSTRACT (instrucoes expressas do modelo Word 2026) -----------
+% --- RESUMO / ABSTRACT (Biblioteca IDP, 12/11/2026: ambos em corpo 12) ------
 \newenvironment{resumo}{%
   \idp@tituloelemento{Resumo}%
   \espacosimples\normalsize\setlength{\parindent}{0pt}\noindent\ignorespaces
@@ -759,7 +781,7 @@
 }
 \renewenvironment{abstract}{%
   \idp@tituloelemento{Abstract}%
-  \idpcorpodez\setlength{\parindent}{0pt}\selectlanguage{english}\noindent\ignorespaces
+  \espacosimples\normalsize\setlength{\parindent}{0pt}\selectlanguage{english}\noindent\ignorespaces
 }{%
   \par\vspace{2\idplinhasimp}%
   \noindent\textbf{Keywords:} \idp@keywords
@@ -768,7 +790,7 @@
 % Resumo em outro idioma qualquer
 \newenvironment{resumoestrangeiro}[2]{%
   \idp@tituloelemento{#1}%
-  \idpcorpodez\setlength{\parindent}{0pt}\noindent\ignorespaces
+  \espacosimples\normalsize\setlength{\parindent}{0pt}\noindent\ignorespaces
   \def\idp@kwtmp{#2}%
 }{%
   \par\vspace{2\idplinhasimp}%
