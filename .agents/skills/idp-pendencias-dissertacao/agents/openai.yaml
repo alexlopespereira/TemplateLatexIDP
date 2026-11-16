@@ -1,0 +1,4 @@
+interface:
+  display_name: "IDP: pendências da dissertação"
+  short_description: "Conferir artefatos, bancas e exigências da Biblioteca"
+  default_prompt: "Use $idp-pendencias-dissertacao para avaliar os artefatos da minha pasta, apontar pendências e orientar a próxima etapa no IDP."

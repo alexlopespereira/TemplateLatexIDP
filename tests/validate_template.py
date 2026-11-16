@@ -98,6 +98,13 @@ Texto final de teste \parencite{{abnt10520}}.
 \includegraphics[width=40mm]{{figuras/ilustracao-modelo-2026.png}}
 \fonte[40mm]{{Fonte de teste.}}
 \end{{figure}}
+\begin{{table}}[H]
+\caption{{Tabela medida}}
+\begin{{elemento}}\begin{{tabular}}{{ll}}
+\toprule Nome & Valor \\ \midrule Exemplo & 10 \\ \bottomrule
+\end{{tabular}}\end{{elemento}}
+\fonte{{Fonte alinhada automaticamente.}}
+\end{{table}}
 \nocite{{abnt10520,abnt6023,abnt14724,abnt6027}}
 \referencias
 \end{{document}}
@@ -125,6 +132,10 @@ for level in ['bacharelado', 'especializacao', 'mestrado', 'doutorado']:
     assert any(abs(size-9) < .15 and 'Italic' in font for size,font in captions), \
         'Legenda da figura diverge do tamanho/italico do modelo'
     assert 'Fonte de teste.' in text, 'Fonte com largura opcional nao foi renderizada'
+    assert 'Fontealinhadaautomaticamente.' in re.sub(r'\s+','',re.sub(r'-\s*\n\s*','',text))
+    approval=pdf.pages[3].extract_text()
+    if level in ('mestrado','doutorado'):
+        assert 'AreadeTeste' in re.sub(r'\s+', '', approval), 'Area ausente na folha de aprovacao'
     assert re.search(r'\(Authier-Reiriz,?\s+1982\)', text), 'Capitalizacao incorreta na citacao'
     assert 'AssociaçãoBrasileiradeNormasTécnicas,2023' in compact, \
         'Capitalizacao incorreta na citacao de entidade'
@@ -134,7 +145,14 @@ for level in ['bacharelado', 'especializacao', 'mestrado', 'doutorado']:
     resumo = re.search(r'IDPTEST-RESUMO=([\d.]+)/([\d.]+)pt', log)
     abstract = re.search(r'IDPTEST-ABSTRACT=([\d.]+)/([\d.]+)pt', log)
     assert float(resumo[1]) == 12 and abs(float(resumo[2])-13.8) < .05
-    assert float(abstract[1]) == 10 and abs(float(abstract[2])-11.5) < .05
+    assert float(abstract[1]) == 12 and abs(float(abstract[2])-13.8) < .05
+    keyword_sizes=[]
+    for page in pdf.pages:
+        def inspect_keywords(value,cm,tm,font,size):
+            if 'Keywords:' in value:
+                keyword_sizes.append(size)
+        page.extract_text(visitor_text=inspect_keywords)
+    assert keyword_sizes and all(abs(s-12)<.15 for s in keyword_sizes), 'Keywords fora do corpo 12'
     a, b = map(int, re.findall(r'IDPTEST-PRIMARIA-[AB]=(\d+)', log))
     assert b == a+1, 'Inseriu pagina para forcar paridade'
     assert all((p.extract_text() or '').strip() for p in pdf.pages), 'Pagina vazia de ajuste'
@@ -152,13 +170,17 @@ assert r.returncode and 'PDF da ficha catalografica nao encontrado' in r.stdout
 r = compile_tex('area-vazia', fixture('mestrado').replace(r'\area{Area de Teste}', r'\area{}'), ok=False)
 assert r.returncode and 'Campo nao preenchido' in r.stdout
 
-# Mantem os comandos antigos funcionando em modo de rascunho.
+# Comandos antigos continuam aceitos, mas nunca geram ficha sintetica.
 draft = fixture('bacharelado', official=False).replace('[bacharelado,entrega]', '[bacharelado]')
 compile_tex('rascunho', draft, bibliography=True)
 text = '\n'.join(p.extract_text() or '' for p in PdfReader(BUILD / 'rascunho.pdf').pages)
-assert 'RASCUNHO DE FICHA' in text
+assert 'RASCUNHO DE FICHA' not in text
+assert 'biblioteca@idp.edu.br' in text
+assert 'wPvmB4C7v6' in re.sub(r'\s+','',text)
+assert 'Anglo-Americano' in text
+assert 'CDD:' not in text
 assert 'elaborada pela Biblioteca' not in text
-print('OK protecoes da ficha oficial e compatibilidade do rascunho')
+print('OK ficha oficial obrigatoria e orientacao de solicitacao sem rascunho')
 
 # O termo usa seu proprio modelo e reaproveita os dados do trabalho.
 compile_tex('termo-modelo', (ROOT / 'termo-autoria-ia.tex').read_text(encoding='utf-8'))

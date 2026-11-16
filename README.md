@@ -8,6 +8,9 @@ Ministro Moreira Alves. **O template prevalece nas divergências; o manual é
 complementar**, aplicado apenas aos pontos que o template não define. A
 denominação Universidade IDP e o logotipo fornecido foram mantidos.
 
+A orientação da Biblioteca IDP de **12/11/2026** prevalece nos pontos revistos no
+[quadro de atendimento](docs/ajustes-biblioteca-2026-11-12.md).
+
 > 📘 **É a sua primeira vez?** Leia o **[TUTORIAL.md](TUTORIAL.md)** — ele explica
 > o passo a passo, inclusive como escrever a dissertação com o apoio do
 > **Claude Code** ou do **Codex**.
@@ -20,8 +23,7 @@ denominação Universidade IDP e o logotipo fornecido foram mantidos.
 |---|---|
 | Capa com logo do IDP | ✅ |
 | Folha de rosto | ✅ |
-| Ficha catalográfica | ✅ |
-| Inserção do PDF oficial da ficha; rascunho identificado | ✅ |
+| Inserção do PDF oficial da ficha; orientação para solicitação quando ausente | ✅ |
 | Termo de autoria e uso de IA em PDF separado | ✅ |
 | Folha de aprovação (banca) | ✅ |
 | Dedicatória, agradecimentos, epígrafe | ✅ |
@@ -42,7 +44,7 @@ do manual onde o template é omisso:
 |---|---|
 | Papel | A4 (210 × 297 mm) |
 | Margens | esquerda 3 cm · direita 2 cm · superior 3 cm · inferior 2 cm |
-| Fonte | Times New Roman 12 no texto; título da capa e da folha de rosto em 16; abstract em 10 |
+| Fonte | Times New Roman 12 no texto, abstract e Keywords; título da capa e da folha de rosto em 16 |
 | Entrelinhas | 1,5 no texto; simples no resumo, abstract, citações longas, notas, referências e natureza do trabalho |
 | Recuo de parágrafo | 1,25 cm |
 | Numeração de páginas | canto superior direito, a 2 cm da borda; contagem começa na folha de rosto e só aparece a partir da introdução |
@@ -56,7 +58,7 @@ do manual onde o template é omisso:
 | Citação longa (> 3 linhas) | recuo 4 cm, corpo 10, entrelinha simples, sem aspas |
 | Notas de rodapé | corpo 10, entrelinha simples |
 | Legenda de figura | corpo 9 em itálico, acima, como no Word |
-| Outras legendas e “Fonte:” | corpo 10; fonte abaixo, sem negrito; largura opcional para alinhar à imagem |
+| Outras legendas e “Fonte:” | corpo 10; fonte abaixo, sem negrito, alinhada à esquerda do elemento medido |
 
 ## Estrutura do repositório
 
@@ -129,14 +131,13 @@ Outras opções combináveis:
 ## Os dados do trabalho
 
 `config/dados.tex` é a **fonte única da verdade**: cada dado é digitado uma vez
-e alimenta capa, folha de rosto, ficha catalográfica, folha de aprovação e os
+e alimenta capa, folha de rosto, folha de aprovação e os
 metadados do PDF.
 
 ```latex
 \titulo{A eficácia horizontal dos direitos fundamentais}
 \subtitulo{uma análise da jurisprudência do STF}
 \autor{Maria Aparecida de Souza}
-\autorficha{SOUZA, Maria Aparecida de}
 \orientador{Prof. Dr. João Carlos Pereira}
 \programa{Direito Constitucional}
 \area{Direitos Fundamentais}
@@ -146,11 +147,9 @@ metadados do PDF.
 \membrobancacomidentificador[UnB]{Prof. Dr. Pedro Rocha}{ID Lattes ou ORCID}{Examinador externo}
 ```
 
-Campos disponíveis: `\titulo` `\subtitulo` `\titulotraduzido` `\autor`
-`\autorficha` `\orientador` `\coorientador` `\curso` `\programa` `\area`
-`\linhapesquisa` `\cidade` `\local` `\data` `\datadefesa` `\datadefesacompleta`
-`\membrobanca` `\palavraschave` `\keywords` `\cutter` `\numeropaginas` `\cdd`
-`\assuntos` `\tipotrabalho` `\preambulo` `\instituicao` `\logo` `\semlogo`.
+Consulte a [tabela de campos do tutorial](TUTORIAL.md#4-preencha-seus-dados)
+para os metadados disponíveis. Para personalizações, também existem
+`\tipotrabalho` (legado), `\preambulo`, `\instituicao`, `\logo` e `\semlogo`.
 
 O modelo da banca inclui identificador Lattes/ORCID e instituição. Use
 `\membrobancacomidentificador[Instituição]{Nome}{Identificador}{Função}`.
@@ -158,7 +157,8 @@ A chamada antiga `\membrobanca[Instituição]{Nome}{Função}` continua válida.
 O exemplo contém quatro membros, como o Word; ajuste a composição à banca
 aprovada pelo programa. A área de concentração é obrigatória no mestrado e
 no doutorado e integra a nota da folha de rosto com a expressão *stricto sensu*.
-A folha de aprovação usa a redação específica do Word, sem repetir essa nota.
+A folha de aprovação também inclui a área de concentração, por orientação da
+Biblioteca em 12/11/2026.
 
 ### Reaproveite os dados no texto
 
@@ -176,7 +176,7 @@ Ao meu orientador, \NomeOrientador, agradeço a paciência e o rigor.
 
 ### Nada de `XXXX` na versão entregue
 
-Campo obrigatório em branco aparece no PDF como `[[ PREENCHER: cdd ]]` e gera
+Campo obrigatório em branco aparece no PDF como `[[ PREENCHER: titulo ]]` e gera
 aviso nomeando o campo. Na versão final, compile com a opção `entrega`: o aviso
 vira erro e **nenhum PDF é gerado** enquanto houver pendência.
 
@@ -188,18 +188,40 @@ vira erro e **nenhum PDF é gerado** enquanto houver pendência.
 ## Ficha catalográfica oficial
 
 Solicite a ficha à Biblioteca Ministro Moreira Alves, por `biblioteca@idp.edu.br`
-ou pelo formulário indicado no manual. Salve o PDF recebido em `pretextual/` e
+ou pelo [formulário de solicitação](https://forms.cloud.microsoft/r/wPvmB4C7v6).
+Salve o PDF recebido em `pretextual/` e
 configure em `config/dados.tex`:
 
 ```latex
 \arquivofichacatalografica{pretextual/ficha-catalografica-oficial.pdf}
 ```
 
-O comando existente `\fichacatalografica` insere o PDF na posição correta. Os
-campos antigos (`\cutter`, `\cdd`, `\numeropaginas` etc.) continuam disponíveis
-para o rascunho. Esse rascunho é identificado e não atribuído à biblioteca.
-A opção `entrega` exige o PDF oficial ao inserir a ficha. Dados bibliográficos
-contidos no PDF oficial dispensam o preenchimento desses campos de rascunho.
+O comando `\fichacatalografica` insere o PDF na posição correta. Sem o arquivo,
+o exemplo exibe apenas a orientação com e-mail, formulário, QR code e o aviso
+exigido pela Biblioteca. **Não se gera ficha de rascunho.** A opção `entrega`
+exige o PDF oficial ao inserir a ficha. Os comandos catalográficos antigos
+continuam aceitos por compatibilidade, mas não geram conteúdo catalográfico.
+
+**ATENÇÃO!** Fichas que não estiverem de acordo com as normas do Código de
+Catalogação Anglo-Americano vigente não serão aceitas.
+
+## Fontes de ilustrações e tabelas
+
+Para figuras, quadros, tabelas e gráficos, envolva o elemento centralizado em
+`\begin{elemento}...\end{elemento}` e use `\fonte{...}` logo abaixo. O ambiente
+mede a largura e alinha a fonte à borda esquerda real. A largura explícita
+`\fonte[largura]{texto}` continua disponível. Sem medição nem largura, a classe
+avisa e usa a largura do texto; ajuste documentos antigos ao novo padrão.
+Veja os [exemplos do tutorial](TUTORIAL.md#8-figuras-tabelas-quadros-e-gráficos).
+
+## Resguardo da marca
+
+A marca padrão tem resguardo branco de 3,5 mm em todos os lados.
+`\resguardologo{medida}` permite configurar
+outra medida sem alterar a imagem nem sua proporção.
+
+As medições e a comparação com o Word estão no
+[registro da revisão](docs/ajustes-biblioteca-2026-11-12.md#retificação-e-comparação-direta-com-o-word--13112026).
 
 ## Termo de autoria e uso de IA
 
@@ -221,23 +243,23 @@ Dados excepcionalmente extensos podem exigir revisão da paginação.
 
 | Fonte | Aplicação |
 |---|---|
-| [Modelo Word 2026](https://docs.google.com/document/d/1EGSqrgCwIYK5MpelwSsYxsqPF9-v92em/edit) | fonte obrigatória: apresentação, hierarquia, resumos, natureza e banca |
+| [Modelo Word 2026](<Template final_Monografia_Dissertacao_Tese_2026 uni IDP.docx>) | referência fornecida para a revisão; apresentação, hierarquia, resumos, natureza e banca, com as ressalvas da Biblioteca |
 | [Manual 2026](https://drive.google.com/file/d/1fy5h0PsfprHcXnFbC5MuXxzMTufblAYD/view) | complemento apenas nos pontos não definidos no template |
 | [Regulamento e licença do RI](https://drive.google.com/file/d/1yTuwekiZNtz-uXBlAdNbHKSgr1wROzZF/view) | orientações de depósito e autorização pelo Portal do Aluno |
 | [Termo de autoria e IA](https://docs.google.com/document/d/1zNp7tbtB3X--BvLmIZSPh7mkdRiehvN2nW9Cg7drGvM/edit) | documento avulso para qualificação/defesa |
+| [Orientações MCDIA — Turma 1/2026](<orientacoes-idp/Turma 1-2026 MCDIA - Orientações para Qualificação e Defesa de Dissertação.pdf>) | orientações de qualificação e defesa dessa turma |
 
 Nas contradições internas do Word, a instrução específica do elemento prevalece
-sobre instruções gerais e formatação incidental. O resumo usa 12 e espaço
-simples. O abstract usa 10 e espaço simples, conforme sua instrução, embora o
-parágrafo do arquivo Word esteja formatado em 12. A citação longa usa 10,
+sobre instruções gerais e formatação incidental. Para o abstract e as Keywords,
+vale a revisão posterior da Biblioteca, refletida na tabela de
+[formatação implementada](#formatação-implementada). A citação longa usa 10,
 conforme a orientação junto ao exemplo; uma orientação geral anterior diz 11.
 Os títulos da capa e da folha de rosto acompanham o formato 16 do Word.
 O terceiro nível é normal e o quarto é itálico. O quinto nível, não exemplificado
 no Word, segue o manual. A epígrafe também segue o manual complementar.
 A legenda da figura acompanha o corpo 9 em itálico observado no Word, e a
-indicação de fonte usa corpo 10 sem negrito. `\fonte[100mm]{Niemeyer, 2008.}`
-permite alinhar a indicação à esquerda de uma caixa centralizada de 100 mm;
-`\fonte{...}` mantém o comportamento centralizado das chamadas antigas.
+indicação de fonte segue a orientação de
+[alinhamento ao elemento](#fontes-de-ilustrações-e-tabelas).
 O exemplo inclui a ilustração extraída do Word sem alterar o PNG, com o recorte
 original reproduzido pelo LaTeX. Ver [relatório das três rodadas](docs/validacao-modelo-2026.md).
 
@@ -253,6 +275,26 @@ não é anexada automaticamente: o regulamento prevê manifestação do autor no
 Portal do Aluno (art. 13, §1º). Não se presume uma licença Creative Commons.
 O antigo `templateMonografia_ou_TCC.pdf` permanece apenas como referência histórica.
 
+## Avaliar pendências do aluno
+
+A skill [idp-pendencias-dissertacao](.agents/skills/idp-pendencias-dissertacao/SKILL.md)
+confere os artefatos da pasta local e orienta sobre qualificação, defesa,
+pós-defesa, Biblioteca e artigo derivado. Use, por exemplo:
+
+```text
+Use $idp-pendencias-dissertacao para avaliar minha pasta para a qualificação.
+```
+
+Ela cruza os arquivos com as orientações da Turma 1/2026 e as fontes da
+Biblioteca, aponta inconsistências e documentos não localizados e distingue
+evidência documental de confirmação administrativa. Os prazos da turma não
+são automaticamente aplicados a outros programas. A avaliação não modifica
+o trabalho nem realiza envios ou requerimentos pelo aluno.
+
+O [Regulamento do Repositório Institucional de 2026](orientacoes-idp/Regulamento_Repositorio_IDP_2026.pdf)
+é mantido com a skill como fonte de consulta, em sua versão original, sem
+incorporar propostas de alteração não aprovadas.
+
 ## Verificação
 
 ```bash
@@ -262,7 +304,7 @@ python tests/validate_template.py
 Requer `xelatex`, `biber` e `pypdf`. Compila os quatro níveis e verifica vínculo
 na capa, ficha oficial, citações, corpo/entrelinha dos resumos, banca com
 identificadores, ausência de páginas de ajuste e termo em uma página.
-Também verifica rascunho e rejeição de ficha ausente/inexistente e de área
+Também verifica a página de solicitação sem ficha sintética e rejeição de ficha ausente/inexistente e de área
 vazia em pós-graduação. Para conferir a compatibilidade legada, execute
 `python tests/validate_template.py --engine pdflatex`. Os arquivos ficam em `.build/`.
 As instruções e referências de exemplo precisam ser substituídas pelos dados

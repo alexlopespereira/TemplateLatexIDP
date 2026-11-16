@@ -2,7 +2,7 @@
 %% DADOS DO TRABALHO -- FONTE ÚNICA DA VERDADE
 %%
 %% Este é o ÚNICO arquivo onde os dados do seu trabalho devem ser digitados.
-%% Tudo o que aparece na capa, folha de rosto, ficha catalográfica, folha de
+%% Tudo o que aparece na capa, folha de rosto, folha de
 %% aprovação e nos metadados do PDF é gerado a partir daqui.
 %%
 %% Campos marcados como OBRIGATÓRIO que ficarem em branco aparecem no PDF
@@ -24,7 +24,6 @@
 
 \autor{Nome Completo do Autor}                    % OBRIGATÓRIO
 \matricula{}                                     % opcional: termo de autoria/IA
-\autorficha{SOBRENOME, Nome}                      % OBRIGATÓRIO (formato invertido)
 
 \orientador{Prof. Dr. Nome Completo do Orientador}  % OBRIGATÓRIO
 \coorientador{}                                     % opcional
@@ -55,13 +54,10 @@
 %% --- Ficha catalográfica ---------------------------------------------------
 %% A ficha OFICIAL é elaborada pela Biblioteca Ministro Moreira Alves.
 %% Solicite por biblioteca@idp.edu.br e insira o PDF oficial abaixo.
-%% O modo `entrega' exige esse PDF. Sem ele, a classe gera apenas RASCUNHO.
+%% O modo `entrega' exige esse PDF. Sem ele, aparece apenas a orientação
+%% com e-mail, formulário e QR code para solicitar a ficha à Biblioteca.
 % \arquivofichacatalografica{pretextual/ficha-catalografica-oficial.pdf}
-%% Os campos abaixo alimentam SOMENTE o rascunho; nao substituem a Biblioteca.
-\cutter{}                                % notação Cutter fornecida pela Biblioteca
-\numeropaginas{00}                       % OBRIGATÓRIO: total de folhas
-\cdd{XXX}                                % OBRIGATÓRIO: Classificação Decimal de Dewey
-\assuntos{1. Palavra-chave. 2. Palavra-chave. 3. Palavra-chave.}
+%% Não transcreva nem gere dados catalográficos; use o PDF oficial recebido.
 
 %% --- Resumo ----------------------------------------------------------------
 \palavraschave{Termo 1; termo 2; termo 3; termo 4; termo 5.}   % OBRIGATÓRIO
@@ -75,7 +71,7 @@
 % \preambulo{Monografia apresentada como requisito para obtenção do título de
 %            bacharel em Direito da Universidade IDP.}
 
-%% Tipo do trabalho na ficha catalográfica (padrão: Monografia/Dissertação/Tese)
+%% Campo legado, aceito por compatibilidade; não gera ficha catalográfica.
 % \tipotrabalho{Trabalho de Conclusão de Curso}
 
 %% Linha inteira da data de defesa, se o seu programa exigir outra redação
