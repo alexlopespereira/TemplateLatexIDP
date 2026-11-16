@@ -76,16 +76,17 @@ de caixas no log. Isso não equivale a identidade de pixels entre Word e LaTeX.
 - O Word tem 23 páginas; o exemplo tem 26 por incluir epígrafe, lista de quadros
   e segundo apêndice, além de textos e dados demonstrativos próprios.
   Esses conteúdos e os nomes/títulos preenchidos também alteram quebras de linha.
-- O abstract segue a instrução expressa do Word (10 pt, simples), embora o
-  parágrafo do arquivo de referência esteja formatado em 12 pt. A prioridade
-  da instrução específica está registrada no README. A citação longa segue 10,
+- A conclusão desta rodada sobre o abstract foi substituída pela
+  [revisão da Biblioteca](ajustes-biblioteca-2026-11-12.md).
+  A citação longa segue 10,
   instrução junto ao exemplo, em lugar do 11 citado na orientação geral.
 - A nota da folha de rosto usa o primeiro espaço de apresentação do modelo,
   com a redação do nível escolhido; não conserva os espaços das alternativas removidas.
 - Foram mantidos o nome Universidade IDP e o logo fornecido. A denominação
   antiga no termo foi preservada como parte de sua redação oficial.
-- A ficha presente no exemplo é rascunho identificado. A entrega exige o PDF
-  oficial da Biblioteca. Metadados, resumos, textos e referências continuam
+- Para a ficha catalográfica, consulte a
+  [orientação atual no README](../README.md#ficha-catalográfica-oficial).
+  Metadados, resumos, textos e referências continuam
   demonstrativos e precisam ser substituídos/verificados no trabalho real.
 - O README registra a divergência do ano da NBR 6027 entre as fontes.
   A referência bibliográfica existente de 2012 foi preservada.

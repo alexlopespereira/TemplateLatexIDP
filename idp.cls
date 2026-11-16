@@ -445,7 +445,7 @@
   \ifx\idp@matricula\@empty\rule{35mm}{0.4pt}\else\idp@matricula\fi}
 \newcommand{\TituloCompletoTrabalho}{%
   \idp@titulo\ifx\idp@subtitulo\@empty\else: \idp@subtitulo\fi}
-% Capa, ficha e documentos avulsos usam curso ou programa conforme o nivel.
+% Capa e documentos avulsos usam curso ou programa conforme o nivel.
 \newcommand{\NomeVinculo}{%
   \ifx\idp@nivel\idp@n@mestrado\idp@programa
   \else\ifx\idp@nivel\idp@n@doutorado\idp@programa
@@ -564,8 +564,7 @@
 \def\idp@n@mestrado{mestrado}
 \def\idp@n@doutorado{doutorado}
 
-% \tipotrabalho{} sobrepoe o tipo deduzido do nivel (util p/ "Trabalho de
-% Conclusao de Curso", "Relatorio Tecnico" etc. na ficha catalografica)
+% Ponto de compatibilidade legado; nao compoe a ficha oficial da Biblioteca.
 \newcommand{\idp@tipopadrao}{%
   \ifx\idp@tipotrabalho\@empty
     \ifx\idp@nivel\idp@n@mestrado Disserta\c{c}\~ao%

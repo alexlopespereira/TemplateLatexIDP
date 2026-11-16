@@ -112,7 +112,8 @@ O terceiro nível não tem destaque; o quarto e o quinto são itálicos.
 Resumo, abstract e Keywords usam corpo 12 e espaço simples, conforme a revisão
 da Biblioteca. Palavras-chave usam ponto e vírgula. Não force páginas ímpares.
 Não gere ficha catalográfica: sem o PDF oficial, mostre apenas a orientação para
-solicitá-la à Biblioteca. A folha de aprovação deve incluir a área de concentração.
+solicitá-la à Biblioteca. Para a área na folha de aprovação, siga
+[Os dados do trabalho](README.md#os-dados-do-trabalho).
 O termo avulso tem formatação própria e deve caber em uma página com os dados de exemplo.
 O nível compartilhado dos documentos está em `config/nivel.tex`.
 Use `\arquivofichacatalografica{...}` para inserir o PDF oficial da Biblioteca.

@@ -8,9 +8,7 @@ Ministro Moreira Alves. **O template prevalece nas divergências; o manual é
 complementar**, aplicado apenas aos pontos que o template não define. A
 denominação Universidade IDP e o logotipo fornecido foram mantidos.
 
-A orientação da Biblioteca IDP de **12/11/2026** prevalece nos pontos revistos:
-resguardo da marca, solicitação da ficha, área na aprovação, abstract/Keywords
-em corpo 12 e indicação de fonte à esquerda do elemento. Consulte o
+A orientação da Biblioteca IDP de **12/11/2026** prevalece nos pontos revistos no
 [quadro de atendimento](docs/ajustes-biblioteca-2026-11-12.md).
 
 > 📘 **É a sua primeira vez?** Leia o **[TUTORIAL.md](TUTORIAL.md)** — ele explica
@@ -25,7 +23,6 @@ em corpo 12 e indicação de fonte à esquerda do elemento. Consulte o
 |---|---|
 | Capa com logo do IDP | ✅ |
 | Folha de rosto | ✅ |
-| Ficha catalográfica | ✅ |
 | Inserção do PDF oficial da ficha; orientação para solicitação quando ausente | ✅ |
 | Termo de autoria e uso de IA em PDF separado | ✅ |
 | Folha de aprovação (banca) | ✅ |
@@ -134,14 +131,13 @@ Outras opções combináveis:
 ## Os dados do trabalho
 
 `config/dados.tex` é a **fonte única da verdade**: cada dado é digitado uma vez
-e alimenta capa, folha de rosto, ficha catalográfica, folha de aprovação e os
+e alimenta capa, folha de rosto, folha de aprovação e os
 metadados do PDF.
 
 ```latex
 \titulo{A eficácia horizontal dos direitos fundamentais}
 \subtitulo{uma análise da jurisprudência do STF}
 \autor{Maria Aparecida de Souza}
-\autorficha{SOUZA, Maria Aparecida de}
 \orientador{Prof. Dr. João Carlos Pereira}
 \programa{Direito Constitucional}
 \area{Direitos Fundamentais}
@@ -151,11 +147,9 @@ metadados do PDF.
 \membrobancacomidentificador[UnB]{Prof. Dr. Pedro Rocha}{ID Lattes ou ORCID}{Examinador externo}
 ```
 
-Campos disponíveis: `\titulo` `\subtitulo` `\titulotraduzido` `\autor`
-`\autorficha` `\orientador` `\coorientador` `\curso` `\programa` `\area`
-`\linhapesquisa` `\cidade` `\local` `\data` `\datadefesa` `\datadefesacompleta`
-`\membrobanca` `\palavraschave` `\keywords` `\cutter` `\numeropaginas` `\cdd`
-`\assuntos` `\tipotrabalho` `\preambulo` `\instituicao` `\logo` `\semlogo`.
+Consulte a [tabela de campos do tutorial](TUTORIAL.md#4-preencha-seus-dados)
+para os metadados disponíveis. Para personalizações, também existem
+`\tipotrabalho` (legado), `\preambulo`, `\instituicao`, `\logo` e `\semlogo`.
 
 O modelo da banca inclui identificador Lattes/ORCID e instituição. Use
 `\membrobancacomidentificador[Instituição]{Nome}{Identificador}{Função}`.
@@ -211,22 +205,23 @@ continuam aceitos por compatibilidade, mas não geram conteúdo catalográfico.
 **ATENÇÃO!** Fichas que não estiverem de acordo com as normas do Código de
 Catalogação Anglo-Americano vigente não serão aceitas.
 
+## Fontes de ilustrações e tabelas
+
 Para figuras, quadros, tabelas e gráficos, envolva o elemento centralizado em
 `\begin{elemento}...\end{elemento}` e use `\fonte{...}` logo abaixo. O ambiente
 mede a largura e alinha a fonte à borda esquerda real. A largura explícita
 `\fonte[largura]{texto}` continua disponível. Sem medição nem largura, a classe
 avisa e usa a largura do texto; ajuste documentos antigos ao novo padrão.
+Veja os [exemplos do tutorial](TUTORIAL.md#8-figuras-tabelas-quadros-e-gráficos).
 
-A marca padrão tem resguardo branco mínimo de 3,5 mm em todos os lados,
-superior ao intervalo de aproximadamente 3,14 mm entre os componentes do logo
-fornecido quando exibido a 57 mm. `\resguardologo{medida}` permite configurar
+## Resguardo da marca
+
+A marca padrão tem resguardo branco de 3,5 mm em todos os lados.
+`\resguardologo{medida}` permite configurar
 outra medida sem alterar a imagem nem sua proporção.
 
-Na revisão de 13/11/2026, a distância entre a base da marca e a linha
-“Universidade IDP” foi corrigida para aproximadamente 8,47 mm, equivalente
-aos 8,44 mm medidos no Word fornecido. A página de solicitação da ficha
-também acompanha o título, painel e QR code desse modelo. A conferência
-dos cinco pedidos está em `docs/ajustes-biblioteca-2026-11-12.md`.
+As medições e a comparação com o Word estão no
+[registro da revisão](docs/ajustes-biblioteca-2026-11-12.md#retificação-e-comparação-direta-com-o-word--13112026).
 
 ## Termo de autoria e uso de IA
 
@@ -248,22 +243,23 @@ Dados excepcionalmente extensos podem exigir revisão da paginação.
 
 | Fonte | Aplicação |
 |---|---|
-| [Modelo Word 2026](https://docs.google.com/document/d/1EGSqrgCwIYK5MpelwSsYxsqPF9-v92em/edit) | fonte obrigatória: apresentação, hierarquia, resumos, natureza e banca |
+| [Modelo Word 2026](<Template final_Monografia_Dissertacao_Tese_2026 uni IDP.docx>) | referência fornecida para a revisão; apresentação, hierarquia, resumos, natureza e banca, com as ressalvas da Biblioteca |
 | [Manual 2026](https://drive.google.com/file/d/1fy5h0PsfprHcXnFbC5MuXxzMTufblAYD/view) | complemento apenas nos pontos não definidos no template |
 | [Regulamento e licença do RI](https://drive.google.com/file/d/1yTuwekiZNtz-uXBlAdNbHKSgr1wROzZF/view) | orientações de depósito e autorização pelo Portal do Aluno |
 | [Termo de autoria e IA](https://docs.google.com/document/d/1zNp7tbtB3X--BvLmIZSPh7mkdRiehvN2nW9Cg7drGvM/edit) | documento avulso para qualificação/defesa |
+| [Orientações MCDIA — Turma 1/2026](<orientacoes-idp/Turma 1-2026 MCDIA - Orientações para Qualificação e Defesa de Dissertação.pdf>) | orientações de qualificação e defesa dessa turma |
 
 Nas contradições internas do Word, a instrução específica do elemento prevalece
-sobre instruções gerais e formatação incidental. O resumo usa 12 e espaço
-simples. A revisão da Biblioteca de 12/11/2026 determina corpo 12 no abstract
-e nas Keywords, substituindo a indicação de corpo 10 do Word. A citação longa usa 10,
+sobre instruções gerais e formatação incidental. Para o abstract e as Keywords,
+vale a revisão posterior da Biblioteca, refletida na tabela de
+[formatação implementada](#formatação-implementada). A citação longa usa 10,
 conforme a orientação junto ao exemplo; uma orientação geral anterior diz 11.
 Os títulos da capa e da folha de rosto acompanham o formato 16 do Word.
 O terceiro nível é normal e o quarto é itálico. O quinto nível, não exemplificado
 no Word, segue o manual. A epígrafe também segue o manual complementar.
 A legenda da figura acompanha o corpo 9 em itálico observado no Word, e a
-indicação de fonte usa corpo 10 sem negrito. O ambiente `elemento` mede a
-ilustração ou tabela e `\fonte{...}` alinha a indicação à esquerda dessa largura.
+indicação de fonte segue a orientação de
+[alinhamento ao elemento](#fontes-de-ilustrações-e-tabelas).
 O exemplo inclui a ilustração extraída do Word sem alterar o PNG, com o recorte
 original reproduzido pelo LaTeX. Ver [relatório das três rodadas](docs/validacao-modelo-2026.md).
 

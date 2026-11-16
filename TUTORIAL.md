@@ -197,7 +197,7 @@ Repare em dois detalhes que evitam erro:
 | `\linhapesquisa` | — | rosto e aprovação |
 | `\cidade` | — | folha de aprovação |
 | `\local` | — | capa e folha de rosto |
-| `\data` | — | capa, rosto, ficha |
+| `\data` | — | capa e rosto |
 | `\datadefesa` | ✅ | folha de aprovação |
 | `\membrobanca` | ✅ | folha de aprovação (repita para cada membro) |
 | `\membrobancacomidentificador` | recomendado pelo modelo | banca com instituição e ID Lattes/ORCID |
@@ -255,22 +255,12 @@ Ao gerar a **versão final**, acrescente a opção `entrega`:
 ```
 
 Com ela o aviso vira erro: a compilação aborta e **nenhum PDF é gerado**
-enquanto houver campo pendente. É a sua rede de segurança contra entregar a
-monografia com `XXXX` na ficha catalográfica — um erro mais comum do que parece.
+enquanto houver campo pendente. Confira os campos indicados antes da entrega.
 
 ### A ficha catalográfica
 
-A ficha oficial é elaborada **pela Biblioteca Ministro Moreira Alves**. Solicite
-pelo e-mail **biblioteca@idp.edu.br** ou pelo
-[formulário da Biblioteca](https://forms.cloud.microsoft/r/wPvmB4C7v6) e,
-quando receber, salve o PDF em
-`pretextual/`. Em `config/dados.tex`, informe
-`\arquivofichacatalografica{pretextual/ficha-catalografica-oficial.pdf}`.
-Sem o PDF oficial, aparece apenas a orientação para solicitar a ficha, com
-e-mail, formulário, QR code e o aviso sobre o Código de Catalogação
-Anglo-Americano vigente. O template não gera ficha nem rascunho de ficha.
-A opção `entrega` exige o PDF oficial; os antigos campos catalográficos
-continuam aceitos para compatibilidade, sem efeito no PDF.
+Siga as [instruções de solicitação e inserção da ficha oficial no README](README.md#ficha-catalográfica-oficial),
+incluindo os requisitos do modo `entrega` e a compatibilidade dos campos antigos.
 
 ---
 
@@ -469,9 +459,8 @@ própria lista pré-textual.
 \end{table}
 ```
 
-O ambiente `elemento` mede a imagem ou tabela centralizada para alinhar
-`\fonte` à esquerda da sua largura real. Em documentos anteriores, também
-é possível informar `\fonte[largura]{texto}` explicitamente.
+Consulte as [regras de alinhamento e compatibilidade no README](README.md#fontes-de-ilustrações-e-tabelas)
+ao adaptar figuras e tabelas de documentos anteriores.
 
 **Toda ilustração precisa ser citada no texto** antes de aparecer:
 
@@ -623,7 +612,7 @@ latexmk -C && latexmk -xelatex main.tex
 **Formatação** *(o template já garante — confira mesmo assim)*
 
 - [ ] A4, margens 3/2/3/2 cm
-- [ ] Times New Roman 12 e entrelinhas 1,5 no texto; resumo, abstract e Keywords 12 com espaço simples
+- [ ] Fontes e entrelinhas conferidas conforme a [tabela de formatação](README.md#formatação-implementada)
 - [ ] Recuo de parágrafo 1,25 cm
 - [ ] Numeração no canto superior direito, começando a aparecer na introdução
 - [ ] Citações longas com recuo de 4 cm, corpo 10, entrelinha simples
@@ -633,12 +622,12 @@ latexmk -C && latexmk -xelatex main.tex
 - [ ] `main.tex` compila com a opção `entrega` — é o teste automático de que
       nenhum campo de `config/dados.tex` ficou pendente
 - [ ] Nenhuma ocorrência de `[[ PREENCHER` no PDF
-- [ ] Ficha catalográfica **oficial**, solicitada em biblioteca@idp.edu.br
+- [ ] PDF da [ficha catalográfica oficial](README.md#ficha-catalográfica-oficial) inserido
 - [ ] Nomes, identificadores Lattes/ORCID e instituições de todos os membros da banca conferidos
 
 **Conteúdo**
 
-- [ ] Capa, folha de rosto, ficha catalográfica e folha de aprovação preenchidas
+- [ ] Capa, folha de rosto e folha de aprovação preenchidas
 - [ ] Resumo entre 150 e 500 palavras, parágrafo único, com palavras-chave
 - [ ] *Abstract* fiel ao resumo, com *keywords*
 - [ ] Sumário conferindo com os títulos e as páginas do texto

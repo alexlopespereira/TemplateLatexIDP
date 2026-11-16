@@ -23,39 +23,13 @@ permanece complementar.
 | 4 | Aumentar o abstract e as Keywords para corpo 12. | Ambos usam corpo 12, com espaçamento simples. A orientação escrita no próprio exemplo também foi corrigida. |
 | 5 | Alinhar as fontes das ilustrações e tabelas à esquerda do respectivo elemento. | Criado o ambiente `elemento`, que mede a largura da imagem ou tabela centralizada. `\fonte` usa essa medida para alinhar seu texto à esquerda. Corrigidos os quatro exemplos: figura, quadro, tabela e gráfico. |
 
-## Solicitação de ficha catalográfica
+## Orientações de uso
 
-- E-mail: **biblioteca@idp.edu.br**.
-- Formulário: <https://forms.cloud.microsoft/r/wPvmB4C7v6>.
-- Aviso incluído: fichas fora das normas do Código de Catalogação
-  Anglo-Americano vigente não serão aceitas.
-- O QR code fornecido foi preservado e aponta para o mesmo formulário,
-  com o parâmetro de origem `origin=QRCode`.
-- O aluno deve solicitar e receber a ficha da Biblioteca e configurar
-  `\arquivofichacatalografica{pretextual/ficha-catalografica-oficial.pdf}`.
-  A opção `entrega` impede a compilação sem esse PDF oficial.
-- Os antigos comandos de dados catalográficos continuam aceitos por
-  compatibilidade, mas não produzem uma ficha nem exigem preenchimento.
-
-## Uso do alinhamento de fontes
-
-```latex
-\begin{table}[htb]
-  \caption{Título da tabela}
-  \begin{elemento}
-    \begin{tabular}{lr}
-      Nome & Valor \\
-      Exemplo & 10
-    \end{tabular}
-  \end{elemento}
-  \fonte{Elaborada pelo autor (2026).}
-\end{table}
-```
-
-A chamada antiga `\fonte[largura]{texto}` permanece disponível. Em arquivos
-anteriores que não informem a largura nem usem `elemento`, a classe emite
-aviso para ajustar a marcação; a classe não consegue deduzir a largura de
-um conteúdo arbitrário já impresso.
+O README mantém as instruções de
+[solicitação e inserção da ficha oficial](../README.md#ficha-catalográfica-oficial)
+e de [alinhamento das fontes e compatibilidade](../README.md#fontes-de-ilustrações-e-tabelas).
+Os [exemplos de marcação](../TUTORIAL.md#8-figuras-tabelas-quadros-e-gráficos)
+ficam no tutorial.
 
 ## Verificação
 
@@ -66,7 +40,8 @@ um conteúdo arbitrário já impresso.
 - Abstract e Keywords medidos em aproximadamente 11,96 pontos PDF,
   correspondentes ao corpo LaTeX de 12 pontos.
 - QR code lido tanto na imagem original quanto na página renderizada;
-  conteúdo idêntico e correspondente ao formulário indicado.
+  conteúdo idêntico e correspondente ao formulário indicado, com o parâmetro
+  de origem `origin=QRCode`.
 - Suíte `tests/validate_template.py`: quatro níveis acadêmicos, inserção
   da ficha oficial, bloqueios de entrega e regressão do termo avulso.
   Verificação nos motores XeLaTeX e pdfLaTeX.
@@ -151,5 +126,5 @@ e a página do termo. A leitura do QR code foi feita da página 3 renderizada.
 As versões históricas em `.build/comparacao-2026/iteracao-3/` são anteriores
 à revisão da Biblioteca e ainda incluem o rascunho da ficha. Não devem ser
 apresentadas como a versão corrigida de 13/11. A raiz do repositório contém
-os PDFs atuais; cópias identificadas por data são disponibilizadas em
-`C:/Projects/idp/outputs/template-idp-corrigido-20261113/`.
+os PDFs atuais: [modelo acadêmico](../main.pdf) e
+[termo avulso](../termo-autoria-ia.pdf).
